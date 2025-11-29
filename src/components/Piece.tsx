@@ -1,13 +1,33 @@
 import React from "react";
-import { Text } from "react-native";
+import { View } from "react-native";
 
-type PieceProps = { };
+export type PieceType = (0 | 1)[][]; // 1 = black, 0 = transparent
 
-// from SDK 53 (React 19) onwards, forwardRef is no longer needed, as ref is now a prop
-export function Piece({ }: PieceProps) {
+type Props = {
+  piece: PieceType;
+  cellSize?: number;
+  gap?: number;
+};
+
+export default function Piece({ piece, cellSize = 40, gap = 4 }: Props) {
   return (
-    <Text>
-        Piece
-    </Text>
+    <View style={{ padding: gap, backgroundColor: "transparent" }}>
+      {piece.map((row, rowIndex) => (
+        <View key={rowIndex} style={{ flexDirection: "row" }}>
+          {row.map((cell, colIndex) => (
+            <View
+              key={colIndex}
+              style={{
+                width: cellSize,
+                height: cellSize,
+                margin: gap / 2,
+                backgroundColor: cell ? "black" : "transparent",
+                borderRadius: 4,
+              }}
+            />
+          ))}
+        </View>
+      ))}
+    </View>
   );
 }

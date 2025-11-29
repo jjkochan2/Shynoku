@@ -1,48 +1,40 @@
-import { View, Text, Pressable, StyleSheet } from "react-native";
-import { useLocalSearchParams, useNavigation } from "expo-router";
-import { COLORS } from "../constants/theme";
-import { useLayoutEffect, useState } from "react";
-import { useLevelProgress } from "../../../src/context/LevelProgressContext";
-import ResetButton from "../../components/ResetButton";
+import { View, Text, StyleSheet } from "react-native";
+import { useLocalSearchParams } from "expo-router";
+import Board from "../../components/Board";
+import Piece from "../../components/Piece";
+import { levels } from "../../../src/data/levels";
+import { COLORS } from "../../app/constants/theme";
 
 export default function LevelScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const navigation = useNavigation();
-  const levelNum = Number(id);
-  const { unlockLevel } = useLevelProgress();
-  const [completed, setCompleted] = useState(false);
+  const levelId = parseInt(id, 10);
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      title: `Level ${id}`,
-      headerStyle: { backgroundColor: COLORS.background },
-      headerTintColor: COLORS.primaryDark,
-    });
-  }, [id]);
+  const levelData = levels.find((l) => l.id === levelId);
 
-  const handleComplete = () => {
-    unlockLevel(levelNum + 1); // unlock next level
-    setCompleted(true);
-  };
+  if (!levelData) {
+    return (
+      <View style={[styles.container, { justifyContent: "center" }]}>
+        <Text style={{ color: COLORS.primaryDark }}>Level not found</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Level {id}</Text>
-      <Pressable
-        style={[styles.button, completed && { backgroundColor: COLORS.disabled }]}
-        onPress={handleComplete}
-        disabled={completed}
-      >
-        <Text style={styles.buttonText}>{completed ? "Completed" : "Complete Level"}</Text>
-      </Pressable>
-      <ResetButton/>
+      <Text style={styles.title}>Level {levelData.id}</Text>
+
+      <Board board={levelData.board}/>
+
+      <Text style={styles.subtitle}>Pieces:</Text>
+      {levelData.pieces.map((p, i) => (
+        <Piece key={i} piece={p}/>
+      ))}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.background, justifyContent: "center", alignItems: "center", padding: 20 },
-  title: { fontSize: 32, color: COLORS.primaryDark, marginBottom: 40 },
-  button: { backgroundColor: COLORS.primaryDark, paddingVertical: 15, paddingHorizontal: 30, borderRadius: 12 },
-  buttonText: { color: "white", fontSize: 18 },
+  container: { flex: 1, padding: 20, backgroundColor: COLORS.background, alignItems: "center" },
+  title: { fontSize: 32, color: COLORS.primaryDark, marginBottom: 20 },
+  subtitle: { fontSize: 24, color: COLORS.primaryDark, marginTop: 20 },
 });
