@@ -17,4 +17,21 @@ export const levels = [
       ] as PieceType,
     ],
   },
+  {
+    id: 2,
+    board: [
+      [CellState.White, CellState.White, CellState.Green],
+      [CellState.White, CellState.White, CellState.White],
+      [CellState.Red, CellState.White, CellState.White],
+    ],
+    pieces: [
+      [
+        [1, 1],
+      ] as PieceType,
+      [
+        [1, 1],
+        [0, 1],
+      ] as PieceType,
+    ],
+  },
 ];
