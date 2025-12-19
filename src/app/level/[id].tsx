@@ -13,9 +13,12 @@ export default function LevelScreen() {
 
   if (!levelData) {
     return (
-      <View style={[styles.container, { justifyContent: "center" }]}>
-        <Text style={{ color: COLORS.primaryDark }}>Level not found</Text>
-      </View>
+      <>
+        <Stack.Screen options={{ title: "" }} />
+        <View style={[styles.container, { justifyContent: "center" }]}>
+          <Text style={{ color: COLORS.primaryDark }}>Level not found</Text>
+        </View>
+      </>
     );
   }
 
@@ -28,9 +31,11 @@ export default function LevelScreen() {
         <Board board={levelData.board}/>
 
         <Text style={styles.subtitle}>Pieces:</Text>
-        {levelData.pieces.map((p, i) => (
-          <Piece key={i} piece={p}/>
-        ))}
+        <View style={{ flexDirection: "row", gap: 20 }}>
+          {levelData.pieces.map((p, i) => (
+            <Piece key={i} piece={p}/>
+          ))}
+        </View>
       </View>
     </>
   );
