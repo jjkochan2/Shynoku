@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import { useLocalSearchParams } from "expo-router";
+import { Stack, useLocalSearchParams } from "expo-router";
 import Board from "../../components/Board";
 import Piece from "../../components/Piece";
 import { levels } from "../../../src/data/levels";
@@ -20,16 +20,19 @@ export default function LevelScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Level {levelData.id}</Text>
+    <>
+      <Stack.Screen options={{ title: "" }} />
+      <View style={styles.container}>
+        <Text style={styles.title}>Level {levelData.id}</Text>
 
-      <Board board={levelData.board}/>
+        <Board board={levelData.board}/>
 
-      <Text style={styles.subtitle}>Pieces:</Text>
-      {levelData.pieces.map((p, i) => (
-        <Piece key={i} piece={p}/>
-      ))}
-    </View>
+        <Text style={styles.subtitle}>Pieces:</Text>
+        {levelData.pieces.map((p, i) => (
+          <Piece key={i} piece={p}/>
+        ))}
+      </View>
+    </>
   );
 }
 

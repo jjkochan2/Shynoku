@@ -19,7 +19,7 @@ type Props = {
   gap?: number; // spacing between cells
 };
 
-export default function Board({ board, maxWidth, maxHeight, gap = 4 }: Props) {
+export default function Board({ board, maxWidth, maxHeight, gap = 15 }: Props) {
   const screenWidth = Dimensions.get("window").width;
   const width = maxWidth ?? screenWidth - 40; // default padding 20 each side
   const height = maxHeight ?? width; // default square board
