@@ -1,4 +1,5 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
+import { useRouter } from "expo-router"
 
 const styles = StyleSheet.create({
   titleScreen: {
@@ -10,6 +11,7 @@ const styles = StyleSheet.create({
 });
 
 export default function TitleScreen() {
+  const router = useRouter();
   return (
     <View style={styles.titleScreen}>
       <Text
@@ -21,7 +23,9 @@ export default function TitleScreen() {
       >
         Shynoku
       </Text>
-      <Pressable>
+      <Pressable
+        onPress={() => {router.navigate('/levelSelect')}}
+      >
         <Text>Levels</Text>
       </Pressable>
     </View>
