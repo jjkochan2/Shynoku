@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, Pressable } from "react-native";
 
 const styles = StyleSheet.create({
   titleScreen: {
@@ -21,6 +21,9 @@ export default function TitleScreen() {
       >
         Shynoku
       </Text>
+      <Pressable>
+        <Text>Levels</Text>
+      </Pressable>
     </View>
   );
 }
