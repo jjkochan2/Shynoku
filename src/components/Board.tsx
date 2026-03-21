@@ -9,15 +9,16 @@ const styles = StyleSheet.create({
 });
 
 type BoardProps = {
-    tiles: TileProps[]
+    tiles: TileProps[],
+    numColumns: number
 }
 
-export default function Board({ tiles }: BoardProps) {
+export default function Board({ tiles, numColumns }: BoardProps) {
     return (
         <View style={styles.board}>
             <FlatList
                 data={tiles}
-                numColumns={2}
+                numColumns={numColumns}
                 scrollEnabled={false}
                 keyExtractor={(_, index) => index.toString()}
                 renderItem={({ item }) => <Tile color={item.color} />}

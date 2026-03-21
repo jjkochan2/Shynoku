@@ -44,7 +44,8 @@ export const levelData = [
             { color: "green" },
             { color: "red" },
             { color: "white" }
-        ]
+        ],
+        numColumns: 2
     },
     {
         tiles: [
@@ -57,21 +58,34 @@ export const levelData = [
             { color: "red" },
             { color: "white" },
             { color: "white" },
-        ]
+        ],
+        numColumns: 3
     },
         {
         tiles: [
             { color: "white" },
             { color: "red" },
             { color: "green" },
-            { color: "white" }
-        ]
+            { color: "white" },
+            { color: "white" },
+            { color: "red" },
+            { color: "green" },
+            { color: "white" },
+            { color: "white" },
+            { color: "red" },
+            { color: "green" },
+            { color: "white" },
+            { color: "white" },
+            { color: "black" },
+            { color: "green" },
+            { color: "white" },
+        ],
+        numColumns: 4
     },
 ]
 
 export default function LevelScreen() {
     const { id } = useLocalSearchParams();
-    console.log("id:", id)
     return (
         <View style={styles.levelScreen}>
             <View style={styles.title}>
@@ -80,8 +94,7 @@ export default function LevelScreen() {
                 </Text>
             </View>
             <View style={styles.boardContainer}>
-                <Board
-                    tiles={levelData[Number(id) - 1].tiles}
+                <Board {...levelData[Number(id) - 1]}
                 />
             </View>
             <View style={styles.pieces}>
