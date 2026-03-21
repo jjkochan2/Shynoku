@@ -35,6 +35,14 @@ const styles = StyleSheet.create({
 
 })
 
+function Board() {
+    return (
+        <View>
+            <Text>Board</Text>
+        </View>
+    );
+}
+
 export default function LevelScreen() {
     const { id } = useLocalSearchParams();
     return (
@@ -45,7 +53,7 @@ export default function LevelScreen() {
                 </Text>
             </View>
             <View style={styles.board}>
-                <Text>Board</Text>
+                <Board />
             </View>
             <View style={styles.pieces}>
                 <Text>Pieces</Text>
