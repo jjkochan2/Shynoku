@@ -21,6 +21,19 @@ const styles = StyleSheet.create({
         fontWeight: "600",
         fontSize: 24,
 
+    },
+    level2Button: {
+        backgroundColor: "black",
+        padding: "3%",
+        borderRadius: 12,
+        aspectRatio: 1,
+        alignItems: "center"
+    },
+    level2ButtonText: {
+        color: "white",
+        fontWeight: "600",
+        fontSize: 24,
+
     }
 })
 
@@ -35,6 +48,14 @@ export default function LevelSelectScreen() {
             >
                 <Text style={styles.level1ButtonText}>
                     1
+                </Text>
+            </Pressable>
+            <Pressable
+                style={styles.level2Button}
+                onPress={() => {router.navigate('/level2')}}
+            >
+                <Text style={styles.level2ButtonText}>
+                    2
                 </Text>
             </Pressable>
         </View>
