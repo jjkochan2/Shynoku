@@ -37,8 +37,41 @@ const styles = StyleSheet.create({
 
 })
 
+export const levelData = [
+    {
+        tiles: [
+            { color: "white" },
+            { color: "green" },
+            { color: "red" },
+            { color: "white" }
+        ]
+    },
+    {
+        tiles: [
+            { color: "white" },
+            { color: "white" },
+            { color: "green" },
+            { color: "white" },
+            { color: "white" },
+            { color: "white" },
+            { color: "red" },
+            { color: "white" },
+            { color: "white" },
+        ]
+    },
+        {
+        tiles: [
+            { color: "white" },
+            { color: "red" },
+            { color: "green" },
+            { color: "white" }
+        ]
+    },
+]
+
 export default function LevelScreen() {
     const { id } = useLocalSearchParams();
+    console.log("id:", id)
     return (
         <View style={styles.levelScreen}>
             <View style={styles.title}>
@@ -48,7 +81,7 @@ export default function LevelScreen() {
             </View>
             <View style={styles.boardContainer}>
                 <Board
-                    tiles={[{ color: "white" }, { color: "green" }, { color: "red" }, { color: "white" }]}
+                    tiles={levelData[Number(id) - 1].tiles}
                 />
             </View>
             <View style={styles.pieces}>

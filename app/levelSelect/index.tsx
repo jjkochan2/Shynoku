@@ -1,6 +1,7 @@
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native"
 import { useRouter } from "expo-router"
 import { colors } from "../../src/theme/colors"
+import { levelData } from "../level/[id]";
 
 const styles = StyleSheet.create({
     levelSelectScreen: {
@@ -43,15 +44,15 @@ export default function LevelSelectScreen() {
                 style={styles.levelSelectGrid}
             >
                 <FlatList
-                    data={[1, 2]}
-                    keyExtractor={(item) => item.toString()}
-                    renderItem={({ item }) => (
+                    data={levelData}
+                    keyExtractor={(_ , index) => index.toString()}
+                    renderItem={({ index }) => (
                         <Pressable
                             style={styles.levelButton}
-                            onPress={() => {router.navigate(`/level/${item}`)}}
+                            onPress={() => {router.navigate(`/level/${index + 1}`)}}
                         >
                             <Text style={styles.levelButtonText}>
-                                {item}
+                                {index + 1}
                             </Text>
                         </Pressable>
                     )}
