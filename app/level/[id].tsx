@@ -1,17 +1,18 @@
-import { StyleSheet, Text, View } from "react-native"
+import { StyleSheet, Text, View, Pressable } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 import { colors } from "../../src/theme/colors"
+import Tile from "../../src/components/Tile"
 
 const styles = StyleSheet.create({
     levelScreen: {
         flex: 1,
-        alignItems: "center",
         justifyContent: "center",
         backgroundColor: colors.background
     },
     title: {
         flex: 1,
         justifyContent: "center",
+        alignItems: "center",
         borderWidth: 2,
         borderColor: "red"
     },
@@ -22,13 +23,11 @@ const styles = StyleSheet.create({
     },
     board: {
         flex: 1,
-        justifyContent: "center",
-        borderWidth: 2,
-        borderColor: "yellow"
     },
     pieces: {
         flex: 1,
         justifyContent: "center",
+        alignItems: "center",
         borderWidth: 2,
         borderColor: "green"
     },
@@ -36,9 +35,13 @@ const styles = StyleSheet.create({
 })
 
 function Board() {
+
     return (
-        <View>
-            <Text>Board</Text>
+        <View style={styles.board}>
+            <Tile color="white"/>
+            <Tile color="green"/>
+            <Tile color="red"/>
+            <Tile color="white"/>
         </View>
     );
 }
@@ -52,9 +55,7 @@ export default function LevelScreen() {
                     Level {id}
                 </Text>
             </View>
-            <View style={styles.board}>
-                <Board />
-            </View>
+            <Board />
             <View style={styles.pieces}>
                 <Text>Pieces</Text>
             </View>
