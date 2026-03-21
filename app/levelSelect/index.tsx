@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { FlatList, Pressable, StyleSheet, Text, View } from "react-native"
 import { useRouter } from "expo-router"
 import { colors } from "../../src/theme/colors"
 
@@ -9,31 +9,26 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         backgroundColor: colors.background,
     },
-    level1Button: {
+    levelButton: {
         backgroundColor: "black",
         padding: "3%",
         borderRadius: 12,
         aspectRatio: 1,
-        alignItems: "center"
+        alignItems: "center",
+        justifyContent: "center"
     },
-    level1ButtonText: {
+    levelButtonText: {
         color: "white",
         fontWeight: "600",
         fontSize: 24,
 
     },
-    level2Button: {
-        backgroundColor: "black",
-        padding: "3%",
-        borderRadius: 12,
-        aspectRatio: 1,
-        alignItems: "center"
+    levelSelectGrid: {
+        flex: 1,
     },
-    level2ButtonText: {
-        color: "white",
-        fontWeight: "600",
-        fontSize: 24,
-
+    title: {
+        flex: 1,
+        justifyContent: "center",
     }
 })
 
@@ -41,23 +36,27 @@ export default function LevelSelectScreen() {
     const router = useRouter();
     return (
         <View style={styles.levelSelectScreen}>
-            <Text>Level Select Screen</Text>
-            <Pressable
-                style={styles.level1Button}
-                onPress={() => {router.navigate('/level/1')}}
+            <View style={styles.title}>
+                <Text>Level Select Screen</Text>
+            </View>
+            <View
+                style={styles.levelSelectGrid}
             >
-                <Text style={styles.level1ButtonText}>
-                    1
-                </Text>
-            </Pressable>
-            <Pressable
-                style={styles.level2Button}
-                onPress={() => {router.navigate('/level/2')}}
-            >
-                <Text style={styles.level2ButtonText}>
-                    2
-                </Text>
-            </Pressable>
+                <FlatList
+                    data={[1, 2]}
+                    keyExtractor={(item) => item.toString()}
+                    renderItem={({ item }) => (
+                        <Pressable
+                            style={styles.levelButton}
+                            onPress={() => {router.navigate(`/level/${item}`)}}
+                        >
+                            <Text style={styles.levelButtonText}>
+                                {item}
+                            </Text>
+                        </Pressable>
+                    )}
+                />
+            </View>
         </View>
     );
 }
