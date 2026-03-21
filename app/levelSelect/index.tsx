@@ -44,7 +44,7 @@ export default function LevelSelectScreen() {
             <Text>Level Select Screen</Text>
             <Pressable
                 style={styles.level1Button}
-                onPress={() => {router.navigate('/level1')}}
+                onPress={() => {router.navigate('/level/1')}}
             >
                 <Text style={styles.level1ButtonText}>
                     1
@@ -52,7 +52,7 @@ export default function LevelSelectScreen() {
             </Pressable>
             <Pressable
                 style={styles.level2Button}
-                onPress={() => {router.navigate('/level2')}}
+                onPress={() => {router.navigate('/level/2')}}
             >
                 <Text style={styles.level2ButtonText}>
                     2
