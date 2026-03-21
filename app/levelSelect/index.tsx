@@ -1,12 +1,13 @@
 import { Pressable, StyleSheet, Text, View } from "react-native"
 import { useRouter } from "expo-router"
+import { colors } from "../../src/theme/colors"
 
 const styles = StyleSheet.create({
     levelSelectScreen: {
         flex: 1,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "#0077ffff",
+        backgroundColor: colors.background,
     },
     level1Button: {
         backgroundColor: "black",

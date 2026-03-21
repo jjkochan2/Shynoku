@@ -1,11 +1,12 @@
 import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router"
+import { colors } from "../../src/theme/colors"
 
 const styles = StyleSheet.create({
   titleScreen: {
     flex: 1,
     alignItems: "center",
-    backgroundColor: "#0077ffff",
+    backgroundColor: colors.background,
   },
 
   topSpacer: {
