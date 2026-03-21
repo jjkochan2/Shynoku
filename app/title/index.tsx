@@ -6,25 +6,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     backgroundColor: "#0077ffff",
-    borderWidth: 2,
-    borderColor: "green"
   },
 
   topSpacer: {
     flex: 1,
-    borderWidth: 2,
-    borderColor: "red"
   },
 
   bottomSpacer: {
-    
-  }
+    flex: 1,
+    justifyContent: "center"
+  },
 
   title: {
     flex: 1,
     justifyContent: "center",
-    borderWidth: 2,
-    borderColor: "orange",
   },
 
   titleText: {
@@ -34,15 +29,17 @@ const styles = StyleSheet.create({
   },
 
   levelSelectButton: {
-    flex: 1,
-    borderWidth: 2,
-    borderColor: "yellow",
     justifyContent: "center",
+    backgroundColor: "black",
+    padding: "3%",
+    borderRadius: 999
+
   },
 
   levelSelectButtonText: {
     fontSize: 32,
-    fontWeight: "600"
+    fontWeight: "600",
+    color: "white"
   }
 
 });
@@ -52,7 +49,7 @@ export default function TitleScreen() {
   return (
     <View style={styles.titleScreen}>
 
-      <View style={styles.spacer}></View>
+      <View style={styles.topSpacer}></View>
 
       <View style={styles.title}>
         <Text style={styles.titleText}>
@@ -60,7 +57,7 @@ export default function TitleScreen() {
         </Text>
       </View>
 
-      <View style={styles.spacer}>
+      <View style={styles.bottomSpacer}>
         <Pressable
           style={styles.levelSelectButton}
           onPress={() => {router.navigate('/levelSelect')}}
