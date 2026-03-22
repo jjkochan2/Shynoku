@@ -138,6 +138,7 @@ export const levelData = [
 
 export default function LevelScreen() {
     const { id } = useLocalSearchParams();
+    const level = levelData[Number(id) - 1]
     return (
         <View style={styles.levelScreen}>
             <View style={styles.title}>
@@ -146,11 +147,11 @@ export default function LevelScreen() {
                 </Text>
             </View>
             <View style={styles.boardContainer}>
-                <Board {...levelData[Number(id) - 1]}
+                <Board {...level}
                 />
             </View>
             <View style={styles.piecesContainer}>
-                <Piece {...levelData[Number(id) - 1].pieces[0]} />
+                <Piece {...level.pieces[0]} />
             </View>
         </View>
     );
