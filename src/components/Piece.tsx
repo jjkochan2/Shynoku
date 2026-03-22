@@ -1,3 +1,4 @@
+import { View, StyleSheet } from "react-native";
 import Board from "./Board";
 import { TileProps } from "./Tile";
 
@@ -6,11 +7,18 @@ type PieceProps = {
     numColumns: number
 }
 
+const styles = StyleSheet.create({
+    piece: {
+    }
+})
+
 export default function Piece({ tiles, numColumns}: PieceProps) {
     return (
-        <Board
-            tiles={tiles}
-            numColumns={numColumns}
-        />
+        <View style={styles.piece}>
+            <Board
+                tiles={tiles}
+                numColumns={numColumns}
+            />
+        </View>
     )
 }
