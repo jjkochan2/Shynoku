@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native"
 import { useLocalSearchParams } from "expo-router"
 import { colors } from "../../src/theme/colors"
 import Board from "../../src/components/Board"
+import Piece from "@/src/components/Piece"
 
 const styles = StyleSheet.create({
     levelScreen: {
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 600,
     },
-    pieces: {
+    piecesContainer: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
@@ -45,7 +46,15 @@ export const levelData = [
             { color: "red" },
             { color: "white" }
         ],
-        numColumns: 2
+        numColumns: 2,
+        pieces: [
+            {
+                tiles: [
+                    { color: "black" },
+                ],
+                numColumns: 1,
+            }
+        ]
     },
     {
         tiles: [
@@ -59,7 +68,45 @@ export const levelData = [
             { color: "white" },
             { color: "white" },
         ],
-        numColumns: 3
+        numColumns: 3,
+        pieces: [
+            {
+                tiles: [
+                    { color: "black" },
+                    { color: "clear" },
+                    { color: "black" },
+                    { color: "black" }
+                ],
+                numColumns: 2,
+            },
+            {
+                tiles: [
+                    { color: "black" },
+                    { color: "clear" },
+                    { color: "black" },
+                    { color: "clear" }
+                ],
+                numColumns: 2,
+            },
+            {
+                tiles: [
+                    { color: "black" },
+                    { color: "clear" },
+                    { color: "black" },
+                    { color: "black" }
+                ],
+                numColumns: 2,
+            },
+            {
+                tiles: [
+                    { color: "black" },
+                    { color: "clear" },
+                    { color: "black" },
+                    { color: "clear" }
+                ],
+                numColumns: 2,
+            }
+        ]
     },
         {
         tiles: [
@@ -80,7 +127,18 @@ export const levelData = [
             { color: "green" },
             { color: "white" },
         ],
-        numColumns: 4
+        numColumns: 4,
+        pieces: [
+            {
+                tiles: [
+                    { color: "black" },
+                    { color: "clear" },
+                    { color: "black" },
+                    { color: "black" }
+                ],
+                numColumns: 2,
+            }
+        ]
     },
 ]
 
@@ -97,8 +155,8 @@ export default function LevelScreen() {
                 <Board {...levelData[Number(id) - 1]}
                 />
             </View>
-            <View style={styles.pieces}>
-                <Text>Pieces</Text>
+            <View style={styles.piecesContainer}>
+                <Piece {...levelData[Number(id) - 1].pieces[0]} />
             </View>
         </View>
     );
