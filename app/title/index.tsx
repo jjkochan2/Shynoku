@@ -32,9 +32,9 @@ const styles = StyleSheet.create({
   levelSelectButton: {
     justifyContent: "center",
     backgroundColor: "black",
-    padding: "3%",
-    borderRadius: 999
-
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 999,
   },
 
   levelSelectButtonText: {
