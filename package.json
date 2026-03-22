@@ -2,6 +2,12 @@
 	"name": "shynoku",
 	"main": "expo-router/entry",
 	"version": "1.0.0",
+	"lint-staged": {
+		"*": [
+			"eslint",
+			"prettier --ignore-unknown --write"
+		]
+	},
 	"scripts": {
 		"start": "expo start",
 		"reset-project": "node ./scripts/reset-project.js",
@@ -44,6 +50,7 @@
 		"eslint": "^9.25.0",
 		"eslint-config-expo": "~10.0.0",
 		"husky": "^9.1.7",
+		"lint-staged": "^16.4.0",
 		"prettier": "^3.8.1",
 		"typescript": "~5.9.2"
 	},
