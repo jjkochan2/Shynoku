@@ -1,10 +1,9 @@
 import { useLocalSearchParams } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 
+import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
-
-import Board from "../../src/components/Board";
-import { colors } from "../../src/theme/colors";
+import { colors } from "@/src/theme/colors";
 
 const styles = StyleSheet.create({
 	levelScreen: {

@@ -1,7 +1,8 @@
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { colors } from "../../src/theme/colors";
+import { colors } from "@/src/theme/colors";
+
 import { levelData } from "../level/[id]";
 
 const styles = StyleSheet.create({
