@@ -1,5 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		justifyContent: "center",
 		backgroundColor: colors.background,
+		alignItems: "center",
 	},
 	title: {
 		flex: 1,
@@ -23,8 +24,12 @@ const styles = StyleSheet.create({
 	},
 	piecesContainer: {
 		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
+		// justifyContent: "center",
+		// alignItems: "center",
+		borderWidth: 2,
+		borderColor: "green",
+		aspectRatio: 1,
+		// flexDirection: "row"
 	},
 	boardContainer: {
 		flex: 1,
@@ -146,7 +151,14 @@ export default function LevelScreen() {
 				<Board {...level} />
 			</View>
 			<View style={styles.piecesContainer}>
-				<Piece {...level.pieces[0]} />
+				<FlatList
+					data={level.pieces}
+					numColumns={level.pieces.length}
+					scrollEnabled={false}
+					keyExtractor={(_, index) => index.toString()}
+					renderItem={({ item }) => <Piece {...item} />}
+					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
+				></FlatList>
 			</View>
 		</View>
 	);

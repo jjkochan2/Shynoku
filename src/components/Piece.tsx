@@ -1,7 +1,6 @@
-import { StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 
-import Board from "./Board";
-import { TileProps } from "./Tile";
+import Tile, { TileProps } from "./Tile";
 
 type PieceProps = {
 	tiles: TileProps[];
@@ -9,13 +8,24 @@ type PieceProps = {
 };
 
 const styles = StyleSheet.create({
-	piece: {},
+	piece: {
+		flex: 1,
+		borderWidth: 2,
+		borderColor: "red",
+	},
 });
 
 export default function Piece({ tiles, numColumns }: PieceProps) {
 	return (
 		<View style={styles.piece}>
-			<Board tiles={tiles} numColumns={numColumns} />
+			<FlatList
+				data={tiles}
+				numColumns={numColumns}
+				scrollEnabled={false}
+				keyExtractor={(_, index) => index.toString()}
+				renderItem={({ item }) => <Tile color={item.color} />}
+				contentContainerStyle={{ flexGrow: 1 }}
+			></FlatList>
 		</View>
 	);
 }
