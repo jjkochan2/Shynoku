@@ -1,4 +1,5 @@
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
+
 import Board from "./Board";
 import { TileProps } from "./Tile";
 

@@ -1,4 +1,5 @@
 import { FlatList, StyleSheet, View } from "react-native";
+
 import Tile, { TileProps } from "./Tile";
 
 const styles = StyleSheet.create({

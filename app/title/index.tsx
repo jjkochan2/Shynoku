@@ -1,5 +1,6 @@
-import { Text, View, StyleSheet, Pressable } from "react-native";
 import { useRouter } from "expo-router";
+import { Pressable, StyleSheet, Text, View } from "react-native";
+
 import { colors } from "../../src/theme/colors";
 
 const styles = StyleSheet.create({

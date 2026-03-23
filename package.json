@@ -4,7 +4,7 @@
 	"version": "1.0.0",
 	"lint-staged": {
 		"*.{js,jsx,ts,tsx}": [
-			"eslint --max-warnings=0",
+			"eslint --fix --max-warnings=0",
 			"prettier --write"
 		],
 		"*": [
@@ -52,6 +52,7 @@
 		"baseline-browser-mapping": "^2.10.8",
 		"eslint": "^9.25.0",
 		"eslint-config-expo": "~10.0.0",
+		"eslint-plugin-simple-import-sort": "^12.1.1",
 		"husky": "^9.1.7",
 		"lint-staged": "^16.4.0",
 		"prettier": "^3.8.1",
