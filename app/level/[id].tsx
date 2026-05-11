@@ -142,6 +142,9 @@ export const levelData = [
 export default function LevelScreen() {
 	const { id } = useLocalSearchParams();
 	const level = levelData[Number(id) - 1];
+	const handleDrop = (pieceId: number) => {
+		console.log("dropped:", pieceId);
+	};
 	return (
 		<View style={styles.levelScreen}>
 			<View style={styles.title}>
@@ -156,7 +159,9 @@ export default function LevelScreen() {
 					numColumns={level.pieces.length}
 					scrollEnabled={false}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ item }) => <Piece {...item} />}
+					renderItem={({ item }) => (
+						<Piece {...item} onDrop={() => handleDrop(item.id)} />
+					)}
 					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
 				></FlatList>
 			</View>

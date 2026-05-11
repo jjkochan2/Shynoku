@@ -41,8 +41,7 @@ export default function Piece({ tiles, numColumns }: PieceProps) {
 			),
 
 			onPanResponderRelease: () => {
-				pan.x.setValue(0);
-				pan.y.setValue(0);
+				onDrop();
 			},
 		}),
 	).current;
