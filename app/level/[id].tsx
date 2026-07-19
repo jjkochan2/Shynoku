@@ -1,4 +1,5 @@
 import { useLocalSearchParams } from "expo-router";
+import { useRef, useState } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
 import Board from "@/src/components/Board";
@@ -154,13 +155,37 @@ export default function LevelScreen() {
 	) => {
 		console.log("dropped:", pieceId);
 		console.log("position:", position);
+		console.log("boardBounds:", boardBounds);
 	};
+	const boardRef = useRef<View>(null);
+
+	const [boardBounds, setBoardBounds] = useState<{
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	} | null>(null);
 	return (
 		<View style={styles.levelScreen}>
 			<View style={styles.title}>
 				<Text style={styles.titleText}>Level {id}</Text>
 			</View>
-			<View style={styles.boardContainer}>
+			<View
+				ref={boardRef}
+				style={styles.boardContainer}
+				onLayout={() => {
+					console.log("layout");
+
+					console.log(boardRef.current);
+
+					boardRef.current?.measureInWindow((x, y, width, height) => {
+						console.log("MEASURE CALLBACK");
+						console.log(x, y, width, height);
+
+						setBoardBounds({ x, y, width, height });
+					});
+				}}
+			>
 				<Board {...level} />
 			</View>
 			<View style={styles.piecesContainer}>
@@ -178,6 +203,21 @@ export default function LevelScreen() {
 					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
 				></FlatList>
 			</View>
+			{/* this is a little debugging view */}
+			{/* {boardBounds && (
+				<View
+					pointerEvents="none"
+					style={{
+						position: "absolute",
+						left: boardBounds.x,
+						top: boardBounds.y,
+						width: boardBounds.width,
+						height: boardBounds.height,
+						borderWidth: 3,
+						borderColor: "yellow",
+					}}
+				/>
+			)} */}
 		</View>
 	);
 }

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import {
 	Animated,
 	FlatList,
@@ -26,6 +26,12 @@ const styles = StyleSheet.create({
 export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
 	const pan = useRef(new Animated.ValueXY()).current;
 
+	const onDropRef = useRef(onDrop);
+
+	useEffect(() => {
+		onDropRef.current = onDrop;
+	}, [onDrop]);
+
 	const panResponder = useRef(
 		PanResponder.create({
 			onMoveShouldSetPanResponder: () => true,
@@ -42,7 +48,7 @@ export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
 			),
 
 			onPanResponderRelease: (_, gestureState) => {
-				onDrop({
+				onDropRef.current({
 					x: gestureState.moveX,
 					y: gestureState.moveY,
 				});
