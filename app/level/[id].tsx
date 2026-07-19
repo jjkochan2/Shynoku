@@ -48,6 +48,7 @@ export const levelData = [
 		numColumns: 2,
 		pieces: [
 			{
+				id: 1,
 				tiles: [{ color: "black" }],
 				numColumns: 1,
 			},
@@ -68,6 +69,7 @@ export const levelData = [
 		numColumns: 3,
 		pieces: [
 			{
+				id: 1,
 				tiles: [
 					{ color: "black" },
 					{ color: "clear" },
@@ -77,6 +79,7 @@ export const levelData = [
 				numColumns: 2,
 			},
 			{
+				id: 2,
 				tiles: [
 					{ color: "black" },
 					{ color: "clear" },
@@ -86,6 +89,7 @@ export const levelData = [
 				numColumns: 2,
 			},
 			{
+				id: 3,
 				tiles: [
 					{ color: "black" },
 					{ color: "clear" },
@@ -95,6 +99,7 @@ export const levelData = [
 				numColumns: 2,
 			},
 			{
+				id: 4,
 				tiles: [
 					{ color: "black" },
 					{ color: "clear" },
@@ -127,6 +132,7 @@ export const levelData = [
 		numColumns: 4,
 		pieces: [
 			{
+				id: 1,
 				tiles: [
 					{ color: "black" },
 					{ color: "clear" },
@@ -142,8 +148,12 @@ export const levelData = [
 export default function LevelScreen() {
 	const { id } = useLocalSearchParams();
 	const level = levelData[Number(id) - 1];
-	const handleDrop = (pieceId: number) => {
+	const handleDrop = (
+		pieceId: number,
+		position: { x: number; y: number },
+	) => {
 		console.log("dropped:", pieceId);
+		console.log("position:", position);
 	};
 	return (
 		<View style={styles.levelScreen}>
@@ -160,7 +170,10 @@ export default function LevelScreen() {
 					scrollEnabled={false}
 					keyExtractor={(_, index) => index.toString()}
 					renderItem={({ item }) => (
-						<Piece {...item} onDrop={() => handleDrop(item.id)} />
+						<Piece
+							{...item}
+							onDrop={(position) => handleDrop(item.id, position)}
+						/>
 					)}
 					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
 				></FlatList>

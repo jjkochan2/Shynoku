@@ -12,6 +12,7 @@ import Tile, { TileProps } from "./Tile";
 type PieceProps = {
 	tiles: TileProps[];
 	numColumns: number;
+	onDrop: (position: { x: number; y: number }) => void;
 };
 
 const styles = StyleSheet.create({
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function Piece({ tiles, numColumns }: PieceProps) {
+export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
 	const pan = useRef(new Animated.ValueXY()).current;
 
 	const panResponder = useRef(
@@ -40,8 +41,11 @@ export default function Piece({ tiles, numColumns }: PieceProps) {
 				{ useNativeDriver: false },
 			),
 
-			onPanResponderRelease: () => {
-				onDrop();
+			onPanResponderRelease: (_, gestureState) => {
+				onDrop({
+					x: gestureState.moveX,
+					y: gestureState.moveY,
+				});
 			},
 		}),
 	).current;
