@@ -13,6 +13,7 @@ type PieceProps = {
 	tiles: TileProps[];
 	numColumns: number;
 	onDrop: (position: { x: number; y: number }) => void;
+	placed: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -23,7 +24,12 @@ const styles = StyleSheet.create({
 	},
 });
 
-export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
+export default function Piece({
+	tiles,
+	numColumns,
+	onDrop,
+	placed,
+}: PieceProps) {
 	const pan = useRef(new Animated.ValueXY()).current;
 
 	const onDropRef = useRef(onDrop);
@@ -52,6 +58,7 @@ export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
 					x: gestureState.moveX,
 					y: gestureState.moveY,
 				});
+				pan.setValue({ x: 0, y: 0 });
 			},
 		}),
 	).current;
@@ -69,7 +76,9 @@ export default function Piece({ tiles, numColumns, onDrop }: PieceProps) {
 					numColumns={numColumns}
 					scrollEnabled={false}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ item }) => <Tile color={item.color} />}
+					renderItem={({ item }) => (
+						<Tile color={placed ? "gray" : item.color} />
+					)}
 					contentContainerStyle={{ flexGrow: 1 }}
 				></FlatList>
 			</View>

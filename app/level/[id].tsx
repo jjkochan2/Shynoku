@@ -52,6 +52,7 @@ export const levelData = [
 				id: 1,
 				tiles: [{ color: "black" }],
 				numColumns: 1,
+				placed: false,
 			},
 		],
 	},
@@ -78,6 +79,7 @@ export const levelData = [
 					{ color: "black" },
 				],
 				numColumns: 2,
+				placed: false,
 			},
 			{
 				id: 2,
@@ -88,6 +90,7 @@ export const levelData = [
 					{ color: "clear" },
 				],
 				numColumns: 2,
+				placed: false,
 			},
 			{
 				id: 3,
@@ -98,6 +101,7 @@ export const levelData = [
 					{ color: "black" },
 				],
 				numColumns: 2,
+				placed: false,
 			},
 			{
 				id: 4,
@@ -108,6 +112,7 @@ export const levelData = [
 					{ color: "clear" },
 				],
 				numColumns: 2,
+				placed: false,
 			},
 		],
 	},
@@ -141,6 +146,7 @@ export const levelData = [
 					{ color: "black" },
 				],
 				numColumns: 2,
+				placed: false,
 			},
 		],
 	},
@@ -148,14 +154,75 @@ export const levelData = [
 
 export default function LevelScreen() {
 	const { id } = useLocalSearchParams();
-	const level = levelData[Number(id) - 1];
+	const initialLevel = levelData[Number(id) - 1];
+	const [level, setLevel] = useState(initialLevel);
+	const placePiece = (id: number, position: { row: number; col: number }) => {
+		console.log(
+			`placing piece: ${id} at row: ${position.row} col: ${position.col}`,
+		);
+		setLevel((prevLevel) => {
+			const placedPiece = prevLevel.pieces.find(
+				(piece) => piece.id === id,
+			);
+
+			if (!placedPiece) return prevLevel;
+
+			return {
+				...prevLevel,
+
+				pieces: prevLevel.pieces.map((piece) =>
+					piece.id === id ? { ...piece, placed: true } : piece,
+				),
+
+				tiles: prevLevel.tiles.map((tile, index) =>
+					index === position.row * prevLevel.numColumns + position.col
+						? { ...tile, color: placedPiece.tiles[0].color }
+						: tile,
+				),
+			};
+		});
+	};
 	const handleDrop = (
 		pieceId: number,
 		position: { x: number; y: number },
 	) => {
-		console.log("dropped:", pieceId);
-		console.log("position:", position);
-		console.log("boardBounds:", boardBounds);
+		if (!boardBounds) return;
+
+		const isWithinBoundaries = (
+			position: {
+				x: number;
+				y: number;
+			},
+			boundaries: {
+				x: number;
+				y: number;
+				width: number;
+				height: number;
+			},
+		): boolean => {
+			if (
+				position.x > boundaries.x &&
+				position.x < boundaries.x + boundaries.width &&
+				position.y > boundaries.y &&
+				position.y < boundaries.y + boundaries.height
+			) {
+				return true;
+			} else {
+				return false;
+			}
+		};
+
+		if (isWithinBoundaries(position, boardBounds)) {
+			const relativeX = position.x - boardBounds.x;
+			const relativeY = position.y - boardBounds.y;
+
+			const cellSize = boardBounds.width / level.numColumns;
+
+			const col = Math.floor(relativeX / cellSize);
+			const row = Math.floor(relativeY / cellSize);
+
+			placePiece(pieceId, { row, col });
+		}
 	};
 	const boardRef = useRef<View>(null);
 
@@ -174,14 +241,7 @@ export default function LevelScreen() {
 				ref={boardRef}
 				style={styles.boardContainer}
 				onLayout={() => {
-					console.log("layout");
-
-					console.log(boardRef.current);
-
 					boardRef.current?.measureInWindow((x, y, width, height) => {
-						console.log("MEASURE CALLBACK");
-						console.log(x, y, width, height);
-
 						setBoardBounds({ x, y, width, height });
 					});
 				}}
