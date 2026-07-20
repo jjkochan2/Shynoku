@@ -1,37 +1,11 @@
 import { useLocalSearchParams } from "expo-router";
 import { useRef, useState } from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
-import { colors } from "@/src/theme/colors";
 
-const styles = StyleSheet.create({
-	levelScreen: {
-		flex: 1,
-		justifyContent: "center",
-		backgroundColor: colors.background,
-		alignItems: "center",
-	},
-	title: {
-		flex: 1,
-		justifyContent: "center",
-		alignItems: "center",
-	},
-	titleText: {
-		color: "white",
-		fontSize: 24,
-		fontWeight: 600,
-	},
-	piecesContainer: {
-		flex: 1,
-		aspectRatio: 1,
-	},
-	boardContainer: {
-		flex: 1,
-		alignItems: "center",
-	},
-});
+import { styles } from "./styles";
 
 export const levelData = [
 	{
