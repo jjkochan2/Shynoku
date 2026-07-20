@@ -1,0 +1,3 @@
+1. Scanning expo QR code does not launch app on phone
+	- if using public wifi network, their settings may prevent this
+	- connect your computer to your phone's hotspot to fix
