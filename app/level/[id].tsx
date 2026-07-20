@@ -13,9 +13,6 @@ export default function LevelScreen() {
 	const initialLevel = levelData[Number(id) - 1];
 	const [level, setLevel] = useState(initialLevel);
 	const placePiece = (id: number, position: { row: number; col: number }) => {
-		console.log(
-			`placing piece: ${id} at row: ${position.row} col: ${position.col}`,
-		);
 		setLevel((prevLevel) => {
 			const placedPiece = prevLevel.pieces.find(
 				(piece) => piece.id === id,
