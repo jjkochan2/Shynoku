@@ -138,21 +138,6 @@ export default function LevelScreen() {
 					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
 				></FlatList>
 			</View>
-			{/* this is a little debugging view */}
-			{/* {boardBounds && (
-				<View
-					pointerEvents="none"
-					style={{
-						position: "absolute",
-						left: boardBounds.x,
-						top: boardBounds.y,
-						width: boardBounds.width,
-						height: boardBounds.height,
-						borderWidth: 3,
-						borderColor: "yellow",
-					}}
-				/>
-			)} */}
 			{draggingPiece && dragPosition && boardBounds && (
 				<View
 					style={{
