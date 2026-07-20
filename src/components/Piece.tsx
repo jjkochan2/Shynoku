@@ -10,10 +10,14 @@ import {
 import Tile, { TileProps } from "./Tile";
 
 type PieceProps = {
+	id: number;
 	tiles: TileProps[];
 	numColumns: number;
 	onDrop: (position: { x: number; y: number }) => void;
+	onDrag: (position: { x: number; y: number }) => void;
+	onDragStart: (id: number) => void;
 	placed: boolean;
+	isDragging: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -25,9 +29,13 @@ const styles = StyleSheet.create({
 });
 
 export default function Piece({
+	id,
 	tiles,
 	numColumns,
 	onDrop,
+	onDrag,
+	onDragStart,
+	isDragging,
 	placed,
 }: PieceProps) {
 	const pan = useRef(new Animated.ValueXY()).current;
@@ -40,18 +48,18 @@ export default function Piece({
 
 	const panResponder = useRef(
 		PanResponder.create({
+			onPanResponderGrant: () => {
+				onDragStart(id);
+			},
+
 			onMoveShouldSetPanResponder: () => true,
 
-			onPanResponderMove: Animated.event(
-				[
-					null,
-					{
-						dx: pan.x,
-						dy: pan.y,
-					},
-				],
-				{ useNativeDriver: false },
-			),
+			onPanResponderMove: (_, gestureState) => {
+				onDrag({
+					x: gestureState.moveX,
+					y: gestureState.moveY,
+				});
+			},
 
 			onPanResponderRelease: (_, gestureState) => {
 				onDropRef.current({
@@ -65,7 +73,7 @@ export default function Piece({
 
 	return (
 		<Animated.View
-			{...panResponder.panHandlers}
+			{...(!placed ? panResponder.panHandlers : {})}
 			style={{
 				transform: [{ translateX: pan.x }, { translateY: pan.y }],
 			}}
@@ -77,7 +85,9 @@ export default function Piece({
 					scrollEnabled={false}
 					keyExtractor={(_, index) => index.toString()}
 					renderItem={({ item }) => (
-						<Tile color={placed ? "gray" : item.color} />
+						<Tile
+							color={placed || isDragging ? "gray" : item.color}
+						/>
 					)}
 					contentContainerStyle={{ flexGrow: 1 }}
 				></FlatList>

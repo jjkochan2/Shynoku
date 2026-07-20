@@ -232,6 +232,16 @@ export default function LevelScreen() {
 		width: number;
 		height: number;
 	} | null>(null);
+
+	const [dragPosition, setDragPosition] = useState<{
+		x: number;
+		y: number;
+	} | null>(null);
+
+	const [draggingPiece, setDraggingPiece] = useState<
+		(typeof level.pieces)[number] | null
+	>(null);
+
 	return (
 		<View style={styles.levelScreen}>
 			<View style={styles.title}>
@@ -257,7 +267,19 @@ export default function LevelScreen() {
 					renderItem={({ item }) => (
 						<Piece
 							{...item}
-							onDrop={(position) => handleDrop(item.id, position)}
+							isDragging={draggingPiece?.id === item.id}
+							onDragStart={(id) => {
+								const piece = level.pieces.find(
+									(p) => p.id === id,
+								);
+								if (piece) setDraggingPiece(piece);
+							}}
+							onDrag={(position) => setDragPosition(position)}
+							onDrop={(position) => {
+								handleDrop(item.id, position);
+								setDraggingPiece(null);
+								setDragPosition(null);
+							}}
 						/>
 					)}
 					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
@@ -278,6 +300,28 @@ export default function LevelScreen() {
 					}}
 				/>
 			)} */}
+			{draggingPiece && dragPosition && boardBounds && (
+				<View
+					style={{
+						position: "absolute",
+						left:
+							dragPosition.x -
+							boardBounds.width / level.numColumns / 2,
+						top:
+							dragPosition.y -
+							boardBounds.width / level.numColumns / 2,
+						width: boardBounds.width / level.numColumns,
+					}}
+				>
+					<Piece
+						isDragging={false}
+						{...draggingPiece}
+						onDragStart={() => {}}
+						onDrag={() => {}}
+						onDrop={() => {}}
+					/>
+				</View>
+			)}
 		</View>
 	);
 }
