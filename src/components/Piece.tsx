@@ -23,8 +23,6 @@ type PieceProps = {
 const styles = StyleSheet.create({
 	piece: {
 		flex: 1,
-		borderWidth: 2,
-		borderColor: "red",
 	},
 });
 
