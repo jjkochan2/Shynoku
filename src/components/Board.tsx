@@ -22,7 +22,7 @@ export default function Board({ tiles, numColumns }: BoardProps) {
 				numColumns={numColumns}
 				scrollEnabled={false}
 				keyExtractor={(_, index) => index.toString()}
-				renderItem={({ item }) => <Tile color={item.color} />}
+				renderItem={({ item }) => <Tile {...item} />}
 				contentContainerStyle={{ flexGrow: 1 }}
 			></FlatList>
 		</View>

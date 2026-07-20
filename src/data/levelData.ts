@@ -4,7 +4,7 @@ export const levelData = [
 			{ color: "white" },
 			{ color: "green" },
 			{ color: "red" },
-			{ color: "white" },
+			{ color: "white", shyne: true },
 		],
 		numColumns: 2,
 		pieces: [
