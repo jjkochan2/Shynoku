@@ -22,6 +22,11 @@ const styles = StyleSheet.create({
 	piecesContainer: {
 		flex: 1,
 		aspectRatio: 1,
+		borderWidth: 2,
+		flexDirection: "row",
+		justifyContent: "center",
+		alignItems: "center",
+		gap: 24,
 	},
 	boardContainer: {
 		flex: 1,

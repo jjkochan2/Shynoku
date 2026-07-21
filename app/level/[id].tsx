@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { FlatList, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Board from "@/src/components/Board";
@@ -229,31 +229,23 @@ export default function LevelScreen() {
 				<Board {...level} />
 			</View>
 			<View style={styles.piecesContainer}>
-				<FlatList
-					data={level.pieces}
-					numColumns={level.pieces.length}
-					scrollEnabled={false}
-					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ item }) => (
-						<Piece
-							{...item}
-							isDragging={draggingPiece?.id === item.id}
-							onDragStart={(id) => {
-								const piece = level.pieces.find(
-									(p) => p.id === id,
-								);
-								if (piece) setDraggingPiece(piece);
-							}}
-							onDrag={(position) => setDragPosition(position)}
-							onDrop={(position) => {
-								handleDrop(item.id, position);
-								setDraggingPiece(null);
-								setDragPosition(null);
-							}}
-						/>
-					)}
-					contentContainerStyle={{ flexGrow: 1, padding: 20 }}
-				></FlatList>
+				{level.pieces.map((item) => (
+					<Piece
+						key={item.id}
+						{...item}
+						isDragging={draggingPiece?.id === item.id}
+						onDragStart={(id) => {
+							const piece = level.pieces.find((p) => p.id === id);
+							if (piece) setDraggingPiece(piece);
+						}}
+						onDrag={(position) => setDragPosition(position)}
+						onDrop={(position) => {
+							handleDrop(item.id, position);
+							setDraggingPiece(null);
+							setDragPosition(null);
+						}}
+					/>
+				))}
 			</View>
 			{draggingPiece && dragPosition && boardBounds && (
 				<View
