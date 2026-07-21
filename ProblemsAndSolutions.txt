@@ -1,3 +1,9 @@
 1. Scanning expo QR code does not launch app on phone
+
 	- if using public wifi network, their settings may prevent this
 	- connect your computer to your phone's hotspot to fix
+
+2. git push origin HEAD
+fatal: unable to access 'https://github.com/jjkochan2/Shynoku.git/': SSL certificate problem: unable to get local issuer certificate
+	
+	- if using public wifi, complete the login process to use the wifi
