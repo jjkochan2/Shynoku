@@ -1,12 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
-import { levelData } from "@/src/data/levelData";
+import { Level, levelData, Tile } from "@/src/data/levelData";
 
 import styles from "./styles";
 
@@ -106,6 +106,106 @@ export default function LevelScreen() {
 	const [draggingPiece, setDraggingPiece] = useState<
 		(typeof level.pieces)[number] | null
 	>(null);
+
+	const isLevelSolved = (level: Level) => {
+		type Board = {
+			tiles: Tile[];
+			numColumns: number;
+		};
+
+		function pathExists(
+			board: Board,
+			startIndex: number,
+			endIndex: number,
+		): boolean {
+			const { tiles, numColumns } = board;
+			const numRows = Math.ceil(tiles.length / numColumns);
+
+			const isTraversable = (tile: Tile) =>
+				tile.color === "black" ||
+				tile.color === "green" ||
+				tile.color === "red";
+
+			if (
+				!isTraversable(tiles[startIndex]) ||
+				!isTraversable(tiles[endIndex])
+			) {
+				return false;
+			}
+
+			const visited = new Array(tiles.length).fill(false);
+			const queue: number[] = [startIndex];
+			visited[startIndex] = true;
+
+			const directions = [
+				[-1, 0], // up
+				[1, 0], // down
+				[0, -1], // left
+				[0, 1], // right
+			];
+
+			while (queue.length > 0) {
+				const current = queue.shift()!;
+
+				if (current === endIndex) {
+					return true;
+				}
+
+				const row = Math.floor(current / numColumns);
+				const col = current % numColumns;
+
+				for (const [dr, dc] of directions) {
+					const newRow = row + dr;
+					const newCol = col + dc;
+
+					if (
+						newRow < 0 ||
+						newRow >= numRows ||
+						newCol < 0 ||
+						newCol >= numColumns
+					) {
+						continue;
+					}
+
+					const neighbor = newRow * numColumns + newCol;
+
+					if (
+						neighbor < tiles.length &&
+						isTraversable(tiles[neighbor]) &&
+						!visited[neighbor]
+					) {
+						visited[neighbor] = true;
+						queue.push(neighbor);
+					}
+				}
+			}
+
+			return false;
+		}
+
+		const startIndex = level.tiles.findIndex(
+			(tile) => tile.color === "green",
+		);
+		const endIndex = level.tiles.findIndex((tile) => tile.color === "red");
+		const board = {
+			tiles: level.tiles,
+			numColumns: level.numColumns,
+		};
+		if (
+			level.pieces.every((piece) => piece.placed) &&
+			pathExists(board, startIndex, endIndex)
+		) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
+	useEffect(() => {
+		if (isLevelSolved(level)) {
+			console.log("Level solved!");
+		}
+	}, [level]);
 
 	return (
 		<SafeAreaView style={styles.container}>

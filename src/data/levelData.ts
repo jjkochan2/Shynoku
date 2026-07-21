@@ -1,9 +1,27 @@
-export const levelData = [
+export type Tile = {
+	color: string;
+	shyne?: boolean;
+};
+
+type Piece = {
+	id: number;
+	tiles: Tile[];
+	numColumns: number;
+	placed: boolean;
+};
+
+export type Level = {
+	tiles: Tile[];
+	numColumns: number;
+	pieces: Piece[];
+};
+
+export const levelData: Level[] = [
 	{
 		tiles: [
 			{ color: "white" },
-			{ color: "green" },
 			{ color: "red" },
+			{ color: "green" },
 			{ color: "white", shyne: true },
 		],
 		numColumns: 2,
