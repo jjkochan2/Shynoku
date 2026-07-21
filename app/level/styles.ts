@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 	backArrow: {
-		borderWidth: 2,
 		alignSelf: "flex-start",
 		paddingLeft: 24,
 	},
