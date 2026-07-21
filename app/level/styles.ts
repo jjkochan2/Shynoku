@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 import { colors } from "@/src/theme/colors";
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
 	levelScreen: {
 		flex: 1,
 		justifyContent: "center",
@@ -28,3 +28,5 @@ export const styles = StyleSheet.create({
 		alignItems: "center",
 	},
 });
+
+export default styles;

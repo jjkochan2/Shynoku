@@ -6,7 +6,7 @@ import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
 import { levelData } from "@/src/data/levelData";
 
-import { styles } from "./styles";
+import styles from "./styles";
 
 export default function LevelScreen() {
 	const { id } = useLocalSearchParams();
