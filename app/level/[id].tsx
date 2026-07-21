@@ -1,6 +1,8 @@
-import { useLocalSearchParams } from "expo-router";
+import { Ionicons } from "@expo/vector-icons";
+import { router, useLocalSearchParams } from "expo-router";
 import { useRef, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList, Pressable, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
@@ -96,7 +98,12 @@ export default function LevelScreen() {
 	>(null);
 
 	return (
-		<View style={styles.levelScreen}>
+		<SafeAreaView style={styles.container}>
+			<View style={styles.backArrow}>
+				<Pressable onPress={() => router.back()}>
+					<Ionicons name="chevron-back" size={28} color="white" />
+				</Pressable>
+			</View>
 			<View style={styles.title}>
 				<Text style={styles.titleText}>Level {id}</Text>
 			</View>
@@ -160,6 +167,6 @@ export default function LevelScreen() {
 					/>
 				</View>
 			)}
-		</View>
+		</SafeAreaView>
 	);
 }

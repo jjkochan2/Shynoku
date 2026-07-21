@@ -3,14 +3,14 @@ import { StyleSheet } from "react-native";
 import { colors } from "@/src/theme/colors";
 
 const styles = StyleSheet.create({
-	levelScreen: {
+	container: {
 		flex: 1,
 		justifyContent: "center",
 		backgroundColor: colors.background,
 		alignItems: "center",
+		gap: 24,
 	},
 	title: {
-		flex: 1,
 		justifyContent: "center",
 		alignItems: "center",
 	},
@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
 	boardContainer: {
 		flex: 1,
 		alignItems: "center",
+	},
+	backArrow: {
+		borderWidth: 2,
+		alignSelf: "flex-start",
+		paddingLeft: 24,
 	},
 });
 
