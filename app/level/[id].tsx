@@ -22,6 +22,16 @@ export default function LevelScreen() {
 
 			if (!placedPiece) return prevLevel;
 
+			const TILE_INDEX =
+				position.row * prevLevel.numColumns + position.col;
+
+			if (
+				prevLevel.tiles[TILE_INDEX].color === "red" ||
+				prevLevel.tiles[TILE_INDEX].color === "green"
+			) {
+				return prevLevel;
+			}
+
 			return {
 				...prevLevel,
 
@@ -30,7 +40,7 @@ export default function LevelScreen() {
 				),
 
 				tiles: prevLevel.tiles.map((tile, index) =>
-					index === position.row * prevLevel.numColumns + position.col
+					index === TILE_INDEX
 						? { ...tile, color: placedPiece.tiles[0].color }
 						: tile,
 				),
