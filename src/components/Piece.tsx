@@ -86,7 +86,7 @@ export default function Piece({
 					renderItem={({ item }) => (
 						<Tile
 							color={
-								placed || (isDragging && item.color !== "clear")
+								(placed || isDragging) && item.color !== "clear"
 									? "gray"
 									: item.color
 							}
