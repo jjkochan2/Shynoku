@@ -23,7 +23,6 @@ type PieceProps = {
 const styles = StyleSheet.create({
 	piece: {
 		minWidth: 50,
-		maxWidth: 100,
 	},
 });
 

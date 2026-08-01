@@ -257,7 +257,9 @@ export default function LevelScreen() {
 						top:
 							dragPosition.y -
 							boardBounds.width / level.numColumns / 2,
-						width: boardBounds.width / level.numColumns,
+						width:
+							(boardBounds.width * draggingPiece.numColumns) /
+							level.numColumns,
 					}}
 				>
 					<Piece
