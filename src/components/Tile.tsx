@@ -6,6 +6,7 @@ const styles = StyleSheet.create({
 		aspectRatio: 1,
 		alignItems: "center",
 		justifyContent: "center",
+		margin: "3%",
 	},
 });
 
