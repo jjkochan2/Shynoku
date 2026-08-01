@@ -22,14 +22,41 @@ export default function LevelScreen() {
 
 			if (!placedPiece) return prevLevel;
 
-			const TILE_INDEX =
-				position.row * prevLevel.numColumns + position.col;
+			const newTiles = [...prevLevel.tiles];
 
-			if (
-				prevLevel.tiles[TILE_INDEX].color === "red" ||
-				prevLevel.tiles[TILE_INDEX].color === "green"
-			) {
-				return prevLevel;
+			// iterate through each tile in piece
+			for (let i = 0; i < placedPiece.tiles.length; i++) {
+				// map the tile to a board position
+				const row =
+					position.row +
+					Math.floor(position.row + i / placedPiece.numColumns);
+				const col = position.col + (i % placedPiece.numColumns);
+
+				// attempt to place the tile at that board position
+				const TILE_INDEX = row * prevLevel.numColumns + col;
+
+				// if tile can't be placed, cancel the operation
+				if (
+					prevLevel.tiles[TILE_INDEX].color === "red" ||
+					prevLevel.tiles[TILE_INDEX].color === "green"
+				) {
+					return prevLevel;
+				}
+				// else after each tile has been placed, update baord to new state
+				else {
+					if (placedPiece.tiles[i].color !== "clear") {
+						if (prevLevel.tiles[TILE_INDEX].color === "white") {
+							newTiles[TILE_INDEX] = placedPiece.tiles[i];
+						} else if (
+							prevLevel.tiles[TILE_INDEX].color === "black"
+						) {
+							newTiles[TILE_INDEX] = {
+								...placedPiece.tiles[i],
+								color: "white",
+							};
+						}
+					}
+				}
 			}
 
 			return {
@@ -39,11 +66,7 @@ export default function LevelScreen() {
 					piece.id === id ? { ...piece, placed: true } : piece,
 				),
 
-				tiles: prevLevel.tiles.map((tile, index) =>
-					index === TILE_INDEX
-						? { ...tile, color: placedPiece.tiles[0].color }
-						: tile,
-				),
+				tiles: newTiles,
 			};
 		});
 	};
