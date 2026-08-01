@@ -85,7 +85,11 @@ export default function Piece({
 					keyExtractor={(_, index) => index.toString()}
 					renderItem={({ item }) => (
 						<Tile
-							color={placed || isDragging ? "gray" : item.color}
+							color={
+								placed || (isDragging && item.color !== "clear")
+									? "gray"
+									: item.color
+							}
 						/>
 					)}
 					contentContainerStyle={{ flexGrow: 1 }}
