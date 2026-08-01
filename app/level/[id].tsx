@@ -26,6 +26,9 @@ export default function LevelScreen() {
 
 			// iterate through each tile in piece
 			for (let i = 0; i < placedPiece.tiles.length; i++) {
+				if (placedPiece.tiles[i].color === "clear") {
+					continue;
+				}
 				// map the tile to a board position
 				const row =
 					position.row + Math.floor(i / placedPiece.numColumns);
