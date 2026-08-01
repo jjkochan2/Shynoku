@@ -28,8 +28,7 @@ export default function LevelScreen() {
 			for (let i = 0; i < placedPiece.tiles.length; i++) {
 				// map the tile to a board position
 				const row =
-					position.row +
-					Math.floor(position.row + i / placedPiece.numColumns);
+					position.row + Math.floor(i / placedPiece.numColumns);
 				const col = position.col + (i % placedPiece.numColumns);
 
 				// attempt to place the tile at that board position
@@ -46,12 +45,15 @@ export default function LevelScreen() {
 				else {
 					if (placedPiece.tiles[i].color !== "clear") {
 						if (prevLevel.tiles[TILE_INDEX].color === "white") {
-							newTiles[TILE_INDEX] = placedPiece.tiles[i];
+							newTiles[TILE_INDEX] = {
+								...newTiles[TILE_INDEX],
+								color: placedPiece.tiles[i].color,
+							};
 						} else if (
 							prevLevel.tiles[TILE_INDEX].color === "black"
 						) {
 							newTiles[TILE_INDEX] = {
-								...placedPiece.tiles[i],
+								...newTiles[TILE_INDEX],
 								color: "white",
 							};
 						}
