@@ -39,6 +39,7 @@ export default function LevelScreen() {
 
 				// if tile can't be placed, cancel the operation
 				if (
+					TILE_INDEX >= prevLevel.tiles.length ||
 					prevLevel.tiles[TILE_INDEX].color === "red" ||
 					prevLevel.tiles[TILE_INDEX].color === "green"
 				) {
