@@ -37,13 +37,40 @@ export const levelData: Level[] = [
 	{
 		tiles: [
 			{ color: "white", shyne: true },
-			{ color: "white" },
+			{ color: "white", shyne: true },
 			{ color: "green" },
-			{ color: "white" },
+			{ color: "white", shyne: true },
 			{ color: "white" },
 			{ color: "white" },
 			{ color: "red" },
 			{ color: "white" },
+			{ color: "white" },
+		],
+		numColumns: 3,
+		pieces: [
+			{
+				id: 1,
+				tiles: [
+					{ color: "black" },
+					{ color: "black" },
+					{ color: "black" },
+					{ color: "clear" },
+				],
+				numColumns: 2,
+				placed: false,
+			},
+		],
+	},
+	{
+		tiles: [
+			{ color: "white", shyne: true },
+			{ color: "white", shyne: true },
+			{ color: "green" },
+			{ color: "white", shyne: true },
+			{ color: "white", shyne: true },
+			{ color: "white", shyne: true },
+			{ color: "red" },
+			{ color: "white", shyne: true },
 			{ color: "white" },
 		],
 		numColumns: 3,
