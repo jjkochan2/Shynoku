@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		margin: "3%",
+		borderRadius: "20%",
 	},
 });
 
