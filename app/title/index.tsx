@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
 	levelSelectButton: {
 		justifyContent: "center",
 		backgroundColor: "black",
-		paddingHorizontal: 12,
-		paddingVertical: 6,
+		paddingHorizontal: 32,
+		paddingVertical: 8,
 		borderRadius: 999,
 	},
 
@@ -62,7 +62,7 @@ export default function TitleScreen() {
 						router.navigate("/levelSelect");
 					}}
 				>
-					<Text style={styles.levelSelectButtonText}>Levels</Text>
+					<Text style={styles.levelSelectButtonText}>Play</Text>
 				</Pressable>
 			</View>
 		</View>
