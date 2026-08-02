@@ -36,7 +36,7 @@ export const levelData: Level[] = [
 	},
 	{
 		tiles: [
-			{ color: "white" },
+			{ color: "white", shyne: true },
 			{ color: "white" },
 			{ color: "green" },
 			{ color: "white" },
