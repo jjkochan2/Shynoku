@@ -1,5 +1,7 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { levelData } from "@/src/data/levelData";
 import { colors } from "@/src/theme/colors";
@@ -10,11 +12,14 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 		backgroundColor: colors.background,
+		gap: 12,
 	},
 	levelButton: {
 		backgroundColor: "black",
-		padding: "3%",
+		padding: 8,
 		borderRadius: 12,
+		width: 75,
+		margin: 8,
 		aspectRatio: 1,
 		alignItems: "center",
 		justifyContent: "center",
@@ -28,7 +33,24 @@ const styles = StyleSheet.create({
 		flex: 1,
 	},
 	title: {
-		flex: 1,
+		width: "100%",
+		justifyContent: "center",
+		alignItems: "center",
+		position: "relative",
+	},
+	titleText: {
+		fontSize: 32,
+		color: "white",
+		fontWeight: "600",
+	},
+	titleTextContainer: {
+		borderWidth: 2,
+	},
+	backArrow: {
+		position: "absolute",
+		left: 16,
+		top: 0,
+		bottom: 0,
 		justifyContent: "center",
 	},
 });
@@ -36,13 +58,19 @@ const styles = StyleSheet.create({
 export default function LevelSelectScreen() {
 	const router = useRouter();
 	return (
-		<View style={styles.levelSelectScreen}>
+		<SafeAreaView style={styles.levelSelectScreen}>
 			<View style={styles.title}>
-				<Text>Level Select Screen</Text>
+				<View style={styles.backArrow}>
+					<Pressable onPress={() => router.back()}>
+						<Ionicons name="chevron-back" size={28} color="white" />
+					</Pressable>
+				</View>
+				<Text style={styles.titleText}>Levels</Text>
 			</View>
 			<View style={styles.levelSelectGrid}>
 				<FlatList
 					data={levelData}
+					numColumns={4}
 					keyExtractor={(_, index) => index.toString()}
 					renderItem={({ index }) => (
 						<Pressable
@@ -58,6 +86,6 @@ export default function LevelSelectScreen() {
 					)}
 				/>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
