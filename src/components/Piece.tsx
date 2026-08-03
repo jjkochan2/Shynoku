@@ -18,6 +18,7 @@ type PieceProps = {
 	onDragStart: (id: number) => void;
 	placed: boolean;
 	isDragging: boolean;
+	maxWidth?: number | `${number}%`;
 };
 
 const styles = StyleSheet.create({
@@ -35,6 +36,7 @@ export default function Piece({
 	onDragStart,
 	isDragging,
 	placed,
+	maxWidth,
 }: PieceProps) {
 	const pan = useRef(new Animated.ValueXY()).current;
 
@@ -74,6 +76,7 @@ export default function Piece({
 			{...(!placed ? panResponder.panHandlers : {})}
 			style={{
 				transform: [{ translateX: pan.x }, { translateY: pan.y }],
+				maxWidth,
 			}}
 		>
 			<View style={styles.piece}>
