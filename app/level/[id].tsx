@@ -260,7 +260,7 @@ export default function LevelScreen() {
 			<View style={styles.piecesContainer}>
 				{level.pieces.map((item) => (
 					<Piece
-						maxWidth={"50%"}
+						maxWidth={"25%"}
 						key={item.id}
 						{...item}
 						isDragging={draggingPiece?.id === item.id}
