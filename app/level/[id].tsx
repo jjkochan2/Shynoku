@@ -14,6 +14,7 @@ export default function LevelScreen() {
 	const { id } = useLocalSearchParams();
 	const initialLevel = levelData[Number(id) - 1];
 	const [level, setLevel] = useState(initialLevel);
+	const [levelSolved, setLevelSolved] = useState(false);
 	const placePiece = (id: number, position: { row: number; col: number }) => {
 		setLevel((prevLevel) => {
 			const placedPiece = prevLevel.pieces.find(
@@ -230,11 +231,48 @@ export default function LevelScreen() {
 		}
 	};
 
+	const allShynesAreBlack = (level: Level) => {
+		for (const tile of level.tiles) {
+			if (tile.shyne) {
+				if (tile.color !== "black") {
+					return false;
+				}
+			}
+		}
+		return true;
+	};
+
+	const colorAllPathTiles = (color: string) => {
+		console.log(`coloring all path tiles ${color}`);
+		const colorsToReplace = new Set(["red", "green", "black"]);
+
+		setLevel((prevLevel) => ({
+			...prevLevel,
+			tiles: prevLevel.tiles.map((tile) => ({
+				...tile,
+				color: colorsToReplace.has(tile.color) ? color : tile.color,
+			})),
+		}));
+	};
+
+	const resetLevel = () => {
+		setLevel(initialLevel);
+		setLevelSolved(false);
+	};
+
 	useEffect(() => {
+		if (levelSolved) return;
+
 		if (isLevelSolved(level)) {
 			console.log("Level solved!");
+			setLevelSolved(true);
+			if (allShynesAreBlack(level)) {
+				colorAllPathTiles("aqua");
+			} else {
+				colorAllPathTiles("green");
+			}
 		}
-	}, [level]);
+	}, [level, levelSolved]);
 
 	return (
 		<SafeAreaView style={styles.container}>
@@ -242,7 +280,7 @@ export default function LevelScreen() {
 				<Pressable onPress={() => router.back()}>
 					<Ionicons name="chevron-back" size={28} color="white" />
 				</Pressable>
-				<Pressable onPress={() => setLevel(initialLevel)}>
+				<Pressable onPress={() => resetLevel()}>
 					<Ionicons name="refresh" size={28} color="white" />
 				</Pressable>
 			</View>
