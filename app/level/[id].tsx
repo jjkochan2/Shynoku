@@ -258,7 +258,6 @@ export default function LevelScreen() {
 	};
 
 	const colorAllPathTiles = (color: string) => {
-		console.log(`coloring all path tiles ${color}`);
 		const colorsToReplace = new Set(["red", "green", "black"]);
 
 		setLevel((prevLevel) => ({
