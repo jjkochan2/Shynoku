@@ -44,9 +44,7 @@ const styles = StyleSheet.create({
 		color: "white",
 		fontWeight: "600",
 	},
-	titleTextContainer: {
-		borderWidth: 2,
-	},
+	titleTextContainer: {},
 	backArrow: {
 		position: "absolute",
 		left: 16,
