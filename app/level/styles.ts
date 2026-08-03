@@ -37,6 +37,21 @@ const styles = StyleSheet.create({
 		flexDirection: "row",
 		justifyContent: "space-between",
 	},
+	nextLevelContainer: {
+		position: "absolute",
+		top: "70%",
+		flexDirection: "row",
+		alignItems: "center",
+		gap: 8,
+		backgroundColor: colors.darkBlue,
+		borderRadius: 24,
+		paddingHorizontal: 12,
+		paddingVertical: 6,
+	},
+	nextLevelText: {
+		color: "white",
+		fontWeight: 600,
+	},
 });
 
 export default styles;

@@ -290,7 +290,7 @@ export default function LevelScreen() {
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.navigationBar}>
-				<Pressable onPress={() => router.back()}>
+				<Pressable onPress={() => router.navigate("/levelSelect")}>
 					<Ionicons name="chevron-back" size={28} color="white" />
 				</Pressable>
 				<Pressable onPress={() => resetLevel()}>
@@ -311,6 +311,22 @@ export default function LevelScreen() {
 			>
 				<Board {...level} />
 			</View>
+			{levelSolved && (
+				<Pressable
+					style={styles.nextLevelContainer}
+					onPress={() => {
+						const TOTAL_LEVELS = levelData.length;
+						if (Number(id) < TOTAL_LEVELS) {
+							router.navigate(`/level/${Number(id) + 1}`);
+						} else {
+							router.navigate("/levelSelect");
+						}
+					}}
+				>
+					<Text style={styles.nextLevelText}>Next Level</Text>
+					<Ionicons name="chevron-forward" size={28} color="white" />
+				</Pressable>
+			)}
 			<View style={styles.piecesContainer}>
 				{level.pieces.map((item) => (
 					<Piece
