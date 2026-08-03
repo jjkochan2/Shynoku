@@ -1,10 +1,12 @@
 import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
+import { useFocusEffect, useRouter } from "expo-router";
+import { useCallback, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import LevelButton from "@/src/components/LevelButton";
 import { levelData } from "@/src/data/levelData";
+import { getHighestUnlockedLevel } from "@/src/data/localStorage";
 import { colors } from "@/src/theme/colors";
 
 const styles = StyleSheet.create({
@@ -56,6 +58,17 @@ const styles = StyleSheet.create({
 
 export default function LevelSelectScreen() {
 	const router = useRouter();
+	const [highestUnlockedLevel, setHighestUnlockedLevel] = useState(1);
+
+	useFocusEffect(
+		useCallback(() => {
+			async function load() {
+				setHighestUnlockedLevel(await getHighestUnlockedLevel());
+			}
+
+			load();
+		}, []),
+	);
 	return (
 		<SafeAreaView style={styles.levelSelectScreen}>
 			<View style={styles.title}>
@@ -71,8 +84,11 @@ export default function LevelSelectScreen() {
 					data={levelData}
 					numColumns={4}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ item: level, index }) => (
-						<LevelButton level={level} levelNumber={index} />
+					renderItem={({ index }) => (
+						<LevelButton
+							levelNumber={index}
+							isUnlocked={index + 1 <= highestUnlockedLevel}
+						/>
 					)}
 				/>
 			</View>

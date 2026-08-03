@@ -1,17 +1,14 @@
 import { router } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
-import { Level } from "../../data/levelData";
 import { styles } from "./styles";
 
 type Props = {
-	level: Level;
 	levelNumber: number;
+	isUnlocked: boolean;
 };
 
-export default function LevelButton({ level, levelNumber }: Props) {
-	const isUnlocked = level.isUnlocked;
-
+export default function LevelButton({ levelNumber, isUnlocked }: Props) {
 	if (!isUnlocked) {
 		return <View style={styles.lockedLevelButton} />;
 	}

@@ -7,6 +7,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
 import { Level, levelData, Tile } from "@/src/data/levelData";
+import { getHighestUnlockedLevel, unlockLevel } from "@/src/data/localStorage";
 
 import styles from "./styles";
 
@@ -15,6 +16,15 @@ export default function LevelScreen() {
 	const initialLevel = levelData[Number(id) - 1];
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
+	const [highestUnlockedLevel, setHighestUnlockedLevel] = useState(1);
+
+	useEffect(() => {
+		async function load() {
+			setHighestUnlockedLevel(await getHighestUnlockedLevel());
+		}
+
+		load();
+	}, []);
 	const placePiece = (id: number, position: { row: number; col: number }) => {
 		setLevel((prevLevel) => {
 			const placedPiece = prevLevel.pieces.find(
@@ -266,13 +276,16 @@ export default function LevelScreen() {
 		if (isLevelSolved(level)) {
 			console.log("Level solved!");
 			setLevelSolved(true);
+			if (highestUnlockedLevel === Number(id)) {
+				unlockLevel(Number(id) + 1);
+			}
 			if (allShynesAreBlack(level)) {
 				colorAllPathTiles("aqua");
 			} else {
 				colorAllPathTiles("green");
 			}
 		}
-	}, [level, levelSolved]);
+	}, [level, levelSolved, highestUnlockedLevel, id]);
 
 	return (
 		<SafeAreaView style={styles.container}>
