@@ -31,9 +31,11 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: "center",
 	},
-	backArrow: {
-		alignSelf: "flex-start",
-		paddingLeft: 24,
+	navigationBar: {
+		width: "100%",
+		paddingHorizontal: 24,
+		flexDirection: "row",
+		justifyContent: "space-between",
 	},
 });
 

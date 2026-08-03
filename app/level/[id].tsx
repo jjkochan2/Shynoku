@@ -238,9 +238,12 @@ export default function LevelScreen() {
 
 	return (
 		<SafeAreaView style={styles.container}>
-			<View style={styles.backArrow}>
+			<View style={styles.navigationBar}>
 				<Pressable onPress={() => router.back()}>
 					<Ionicons name="chevron-back" size={28} color="white" />
+				</Pressable>
+				<Pressable onPress={() => setLevel(initialLevel)}>
+					<Ionicons name="refresh" size={28} color="white" />
 				</Pressable>
 			</View>
 			<View style={styles.title}>
