@@ -14,6 +14,7 @@ export type Level = {
 	tiles: Tile[];
 	numColumns: number;
 	pieces: Piece[];
+	isUnlocked: boolean;
 };
 
 export const levelData: Level[] = [
@@ -33,6 +34,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: true,
 	},
 	{
 		tiles: [
@@ -60,6 +62,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -120,6 +123,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -154,6 +158,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -188,6 +193,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -222,6 +228,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -256,6 +263,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -290,6 +298,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -324,6 +333,7 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 	{
 		tiles: [
@@ -358,5 +368,6 @@ export const levelData: Level[] = [
 				placed: false,
 			},
 		],
+		isUnlocked: false,
 	},
 ];

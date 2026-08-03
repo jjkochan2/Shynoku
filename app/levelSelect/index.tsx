@@ -3,6 +3,7 @@ import { useRouter } from "expo-router";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import LevelButton from "@/src/components/LevelButton";
 import { levelData } from "@/src/data/levelData";
 import { colors } from "@/src/theme/colors";
 
@@ -72,17 +73,8 @@ export default function LevelSelectScreen() {
 					data={levelData}
 					numColumns={4}
 					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ index }) => (
-						<Pressable
-							style={styles.levelButton}
-							onPress={() => {
-								router.navigate(`/level/${index + 1}`);
-							}}
-						>
-							<Text style={styles.levelButtonText}>
-								{index + 1}
-							</Text>
-						</Pressable>
+					renderItem={({ item: level, index }) => (
+						<LevelButton level={level} levelNumber={index} />
 					)}
 				/>
 			</View>
