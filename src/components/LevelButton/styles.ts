@@ -26,4 +26,13 @@ export const styles = StyleSheet.create({
 		fontWeight: "600",
 		fontSize: 24,
 	},
+	shyneIndicator: {
+		position: "absolute",
+		top: "15%",
+		right: "15%",
+		width: "20%",
+		height: "20%",
+		backgroundColor: "aqua",
+		borderRadius: 999,
+	},
 });

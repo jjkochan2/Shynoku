@@ -6,7 +6,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import LevelButton from "@/src/components/LevelButton";
 import { levelData } from "@/src/data/levelData";
-import { getHighestUnlockedLevel } from "@/src/data/localStorage";
+import {
+	defaultSaveData,
+	getSaveData,
+	SaveData,
+} from "@/src/data/localStorage";
 import { colors } from "@/src/theme/colors";
 
 const styles = StyleSheet.create({
@@ -58,12 +62,12 @@ const styles = StyleSheet.create({
 
 export default function LevelSelectScreen() {
 	const router = useRouter();
-	const [highestUnlockedLevel, setHighestUnlockedLevel] = useState(1);
+	const [saveData, setSaveData] = useState<SaveData>(defaultSaveData);
 
 	useFocusEffect(
 		useCallback(() => {
 			async function load() {
-				setHighestUnlockedLevel(await getHighestUnlockedLevel());
+				setSaveData(await getSaveData());
 			}
 
 			load();
@@ -73,7 +77,7 @@ export default function LevelSelectScreen() {
 		<SafeAreaView style={styles.levelSelectScreen}>
 			<View style={styles.title}>
 				<View style={styles.backArrow}>
-					<Pressable onPress={() => router.back()}>
+					<Pressable onPress={() => router.navigate("/title")}>
 						<Ionicons name="chevron-back" size={28} color="white" />
 					</Pressable>
 				</View>
@@ -87,11 +91,28 @@ export default function LevelSelectScreen() {
 					renderItem={({ index }) => (
 						<LevelButton
 							levelNumber={index}
-							isUnlocked={index + 1 <= highestUnlockedLevel}
+							isUnlocked={
+								index + 1 <= saveData.highestUnlockedLevel
+							}
+							allShynesCollected={
+								saveData.levels[index].allShynesCollected
+							}
 						/>
 					)}
 				/>
 			</View>
+			{/* <Pressable
+				style={{
+					backgroundColor: 'white'
+				}}
+				onPress={() => {
+					resetSaveData()
+				}}
+			>
+				<Text>
+					Reset all level data
+				</Text>
+			</Pressable> */}
 		</SafeAreaView>
 	);
 }

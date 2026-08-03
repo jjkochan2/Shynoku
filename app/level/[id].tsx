@@ -7,7 +7,12 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
 import { Level, levelData, Tile } from "@/src/data/levelData";
-import { getHighestUnlockedLevel, unlockLevel } from "@/src/data/localStorage";
+import {
+	defaultSaveData,
+	getSaveData,
+	SaveData,
+	updateSaveData,
+} from "@/src/data/localStorage";
 
 import styles from "./styles";
 
@@ -16,11 +21,11 @@ export default function LevelScreen() {
 	const initialLevel = levelData[Number(id) - 1];
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
-	const [highestUnlockedLevel, setHighestUnlockedLevel] = useState(1);
+	const [saveData, setSaveData] = useState<SaveData>(defaultSaveData);
 
 	useEffect(() => {
 		async function load() {
-			setHighestUnlockedLevel(await getHighestUnlockedLevel());
+			setSaveData(await getSaveData());
 		}
 
 		load();
@@ -274,18 +279,28 @@ export default function LevelScreen() {
 		if (levelSolved) return;
 
 		if (isLevelSolved(level)) {
-			console.log("Level solved!");
-			setLevelSolved(true);
-			if (highestUnlockedLevel === Number(id)) {
-				unlockLevel(Number(id) + 1);
+			async function handleLevelSolved() {
+				setLevelSolved(true);
+				await updateSaveData((saveData) => {
+					if (saveData.highestUnlockedLevel === Number(id)) {
+						saveData.highestUnlockedLevel = Number(id) + 1;
+					}
+
+					if (allShynesAreBlack(level)) {
+						saveData.levels[Number(id) - 1].allShynesCollected =
+							true;
+					}
+				});
+
+				if (allShynesAreBlack(level)) {
+					colorAllPathTiles("aqua");
+				} else {
+					colorAllPathTiles("green");
+				}
 			}
-			if (allShynesAreBlack(level)) {
-				colorAllPathTiles("aqua");
-			} else {
-				colorAllPathTiles("green");
-			}
+			handleLevelSolved();
 		}
-	}, [level, levelSolved, highestUnlockedLevel, id]);
+	}, [level, levelSolved, saveData.highestUnlockedLevel, id]);
 
 	return (
 		<SafeAreaView style={styles.container}>
