@@ -9,7 +9,11 @@
 		"userInterfaceStyle": "automatic",
 		"newArchEnabled": true,
 		"ios": {
-			"supportsTablet": true
+			"supportsTablet": true,
+			"bundleIdentifier": "com.jjkochan.Shynoku",
+			"infoPlist": {
+				"ITSAppUsesNonExemptEncryption": false
+			}
 		},
 		"android": {
 			"adaptiveIcon": {
@@ -45,6 +49,12 @@
 		"experiments": {
 			"typedRoutes": true,
 			"reactCompiler": true
+		},
+		"extra": {
+			"router": {},
+			"eas": {
+				"projectId": "b05bc1d6-e56e-4a4b-8f8c-3c33e67cdb84"
+			}
 		}
 	}
 }
