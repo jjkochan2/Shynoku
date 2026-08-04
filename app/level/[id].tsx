@@ -1,7 +1,7 @@
 import { Ionicons } from "@expo/vector-icons";
 import { router, useLocalSearchParams } from "expo-router";
 import { useEffect, useRef, useState } from "react";
-import { Pressable, Text, View } from "react-native";
+import { Modal, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Board from "@/src/components/Board";
@@ -301,15 +301,36 @@ export default function LevelScreen() {
 		}
 	}, [level, levelSolved, saveData.highestUnlockedLevel, id]);
 
+	const [showHelp, setShowHelp] = useState(false);
+
 	return (
 		<SafeAreaView style={styles.container}>
 			<View style={styles.navigationBar}>
 				<Pressable onPress={() => router.navigate("/levelSelect")}>
 					<Ionicons name="chevron-back" size={28} color="white" />
 				</Pressable>
-				<Pressable onPress={() => resetLevel()}>
-					<Ionicons name="refresh" size={28} color="white" />
-				</Pressable>
+				<View
+					style={{
+						flexDirection: "row",
+						gap: 16,
+					}}
+				>
+					<Pressable
+						style={{
+							borderWidth: 2,
+							borderColor: "white",
+							borderRadius: 999,
+						}}
+						onPress={() => {
+							setShowHelp(true);
+						}}
+					>
+						<Ionicons name="help" size={24} color="white" />
+					</Pressable>
+					<Pressable onPress={() => resetLevel()}>
+						<Ionicons name="refresh" size={28} color="white" />
+					</Pressable>
+				</View>
 			</View>
 			<View style={styles.title}>
 				<Text style={styles.titleText}>Level {id}</Text>
@@ -385,6 +406,79 @@ export default function LevelScreen() {
 					/>
 				</View>
 			)}
+			<Modal
+				visible={showHelp}
+				transparent
+				animationType="fade"
+				onRequestClose={() => setShowHelp(false)}
+			>
+				<View
+					style={{
+						flex: 1,
+						justifyContent: "center",
+						alignItems: "center",
+						backgroundColor: "rgba(0,0,0,0.5)",
+					}}
+				>
+					<View
+						style={{
+							backgroundColor: "white",
+							padding: 20,
+							borderRadius: 10,
+							width: "75%",
+							alignItems: "center",
+							gap: 24,
+						}}
+					>
+						<Pressable
+							onPress={() => setShowHelp(false)}
+							style={{
+								position: "absolute",
+								right: 4,
+								top: 4,
+								borderWidth: 2,
+								borderRadius: 999,
+							}}
+						>
+							<Ionicons name="close" size={28} color="black" />
+						</Pressable>
+						<Text
+							style={{
+								fontWeight: 800,
+								fontSize: 32,
+							}}
+						>
+							How to Play
+						</Text>
+						<Text
+							style={{
+								fontWeight: 300,
+								fontSize: 24,
+							}}
+						>
+							Create a path from the red tile to the green tile by
+							dragging pieces onto the board.
+						</Text>
+						<Text
+							style={{
+								fontWeight: 300,
+								fontSize: 24,
+							}}
+						>
+							You must place down all pieces to complete a level.
+						</Text>
+						<Text
+							style={{
+								fontWeight: 300,
+								fontSize: 24,
+							}}
+						>
+							Create a path that covers all &apos;shyne&apos;
+							tiles for a bonus.
+						</Text>
+					</View>
+				</View>
+			</Modal>
 		</SafeAreaView>
 	);
 }

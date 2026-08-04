@@ -13,6 +13,8 @@ const styles = StyleSheet.create({
 	title: {
 		justifyContent: "center",
 		alignItems: "center",
+		flexDirection: "row",
+		gap: 24,
 	},
 	titleText: {
 		color: "white",
