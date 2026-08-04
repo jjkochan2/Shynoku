@@ -57,7 +57,8 @@ export default function LevelScreen() {
 				if (
 					TILE_INDEX >= prevLevel.tiles.length ||
 					prevLevel.tiles[TILE_INDEX].color === "red" ||
-					prevLevel.tiles[TILE_INDEX].color === "green"
+					prevLevel.tiles[TILE_INDEX].color === "green" ||
+					col >= prevLevel.numColumns
 				) {
 					return prevLevel;
 				}
