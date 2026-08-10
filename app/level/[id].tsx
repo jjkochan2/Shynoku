@@ -137,6 +137,13 @@ export default function LevelScreen() {
 	};
 	const boardRef = useRef<View>(null);
 
+	const boardBoundsRef = useRef<{
+		x: number;
+		y: number;
+		width: number;
+		height: number;
+	} | null>(null);
+
 	const [boardBounds, setBoardBounds] = useState<{
 		x: number;
 		y: number;
@@ -341,7 +348,10 @@ export default function LevelScreen() {
 				style={styles.boardContainer}
 				onLayout={() => {
 					boardRef.current?.measureInWindow((x, y, width, height) => {
-						setBoardBounds({ x, y, width, height });
+						const bounds = { x, y, width, height };
+
+						boardBoundsRef.current = bounds;
+						setBoardBounds(bounds);
 					});
 				}}
 			>
@@ -374,9 +384,44 @@ export default function LevelScreen() {
 							const piece = level.pieces.find((p) => p.id === id);
 							if (piece) setDraggingPiece(piece);
 						}}
-						onDrag={(position) => setDragPosition(position)}
+						onDrag={(position) => {
+							const bounds = boardBoundsRef.current;
+
+							if (!bounds) return;
+
+							const tileSize = bounds.width / level.numColumns;
+							const maxNumberOfTilesPieceWidth = item.numColumns;
+
+							setDragPosition({
+								x:
+									position.x -
+									(tileSize *
+										(maxNumberOfTilesPieceWidth - 1)) /
+										2,
+								y:
+									position.y -
+									tileSize * maxNumberOfTilesPieceWidth,
+							});
+						}}
 						onDrop={(position) => {
-							handleDrop(item.id, position);
+							const bounds = boardBoundsRef.current;
+
+							if (!bounds) return;
+
+							const tileSize = bounds.width / level.numColumns;
+							const maxNumberOfTilesPieceWidth = item.numColumns;
+
+							handleDrop(item.id, {
+								x:
+									position.x -
+									(tileSize *
+										(maxNumberOfTilesPieceWidth - 1)) /
+										2,
+								y:
+									position.y -
+									tileSize * maxNumberOfTilesPieceWidth,
+							});
+
 							setDraggingPiece(null);
 							setDragPosition(null);
 						}}
