@@ -9,6 +9,7 @@ type LevelProgress = {
 export type SaveData = {
 	highestUnlockedLevel: number;
 	levels: LevelProgress[];
+	endlessHighScore: number;
 };
 
 export const defaultSaveData: SaveData = {
@@ -16,6 +17,7 @@ export const defaultSaveData: SaveData = {
 	levels: levelData.map(() => ({
 		allShynesCollected: false,
 	})),
+	endlessHighScore: 0,
 };
 
 const KEY = "saveData";

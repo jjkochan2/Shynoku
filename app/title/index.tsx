@@ -1,6 +1,7 @@
 import { useRouter } from "expo-router";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
+import GameButton from "@/src/components/GameButton";
 import { colors } from "@/src/theme/colors";
 
 const styles = StyleSheet.create({
@@ -56,14 +57,12 @@ export default function TitleScreen() {
 			</View>
 
 			<View style={styles.bottomSpacer}>
-				<Pressable
-					style={styles.levelSelectButton}
+				<GameButton
+					text="Play"
 					onPress={() => {
 						router.navigate("/levelSelect");
 					}}
-				>
-					<Text style={styles.levelSelectButtonText}>Play</Text>
-				</Pressable>
+				/>
 			</View>
 		</View>
 	);

@@ -1,9 +1,10 @@
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFocusEffect, useRouter } from "expo-router";
 import { useCallback, useState } from "react";
 import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import GameButton from "@/src/components/GameButton";
 import LevelButton from "@/src/components/LevelButton";
 import { levelData } from "@/src/data/levelData";
 import {
@@ -49,6 +50,11 @@ const styles = StyleSheet.create({
 		fontSize: 32,
 		color: "white",
 		fontWeight: "600",
+	},
+	subTitleText: {
+		fontSize: 24,
+		color: "white",
+		fontWeight: "400",
 	},
 	titleTextContainer: {},
 	backArrow: {
@@ -100,6 +106,24 @@ export default function LevelSelectScreen() {
 						/>
 					)}
 				/>
+			</View>
+			<GameButton
+				text="Endless Mode"
+				onPress={() => {
+					router.navigate("/level/endless");
+				}}
+			/>
+			<View
+				style={{
+					flexDirection: "row",
+					gap: 8,
+					alignItems: "center",
+				}}
+			>
+				<MaterialCommunityIcons name="crown" size={32} color="gold" />
+				<Text style={styles.subTitleText}>
+					High score: {saveData.endlessHighScore ?? 0}
+				</Text>
 			</View>
 			{/* <Pressable
 				style={{
