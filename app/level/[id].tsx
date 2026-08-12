@@ -144,9 +144,9 @@ export default function LevelScreen() {
 	const initialLevel =
 		levelData[Number(id) - 1] ||
 		generateRandomLevel(
-			3 + Math.floor(score / 5),
-			2 + Math.floor(score / 4),
-			2 + Math.floor(score / 6),
+			Math.min(3 + Math.floor(score / 5), 7),
+			3,
+			Math.min(2 + Math.floor(score / 6), 5),
 		);
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
