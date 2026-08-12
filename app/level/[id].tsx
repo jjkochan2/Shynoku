@@ -34,7 +34,7 @@ const isLevelSolved = (level: Level) => {
 	): boolean {
 		if (Number.isNaN(startIndex) || Number.isNaN(endIndex)) return false;
 		if (startIndex === -1 || endIndex === -1)
-			return allShynesAreBlack(level);
+			return allShynesAreBlack(level) && allNonShynesAreNotBlack(level);
 		const { tiles, numColumns } = board;
 		const numRows = Math.ceil(tiles.length / numColumns);
 
@@ -120,6 +120,17 @@ const allShynesAreBlack = (level: Level) => {
 	for (const tile of level.tiles) {
 		if (tile.shyne) {
 			if (tile.color !== "black") {
+				return false;
+			}
+		}
+	}
+	return true;
+};
+
+const allNonShynesAreNotBlack = (level: Level) => {
+	for (const tile of level.tiles) {
+		if (!tile.shyne) {
+			if (tile.color === "black") {
 				return false;
 			}
 		}
@@ -583,6 +594,15 @@ export default function LevelScreen() {
 								>
 									In endless mode, win by covering all
 									&apos;shyne&apos; tiles with pieces.
+								</Text>
+								<Text
+									style={{
+										fontWeight: 300,
+										fontSize: 24,
+									}}
+								>
+									After all pieces have been placed, no black
+									tiles that do not cover a shyne can remain.
 								</Text>
 								<Text
 									style={{
