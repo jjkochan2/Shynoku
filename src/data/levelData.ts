@@ -3,7 +3,7 @@ export type Tile = {
 	shyne?: boolean;
 };
 
-type Piece = {
+export type Piece = {
 	id: number;
 	tiles: Tile[];
 	numColumns: number;

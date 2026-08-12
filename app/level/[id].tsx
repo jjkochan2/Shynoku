@@ -13,7 +13,11 @@ import {
 	SaveData,
 	updateSaveData,
 } from "@/src/data/localStorage";
-import { generateRandomLevel, placePieceOnLevel } from "@/src/utils";
+import {
+	generateRandomLevel,
+	getPieceDimensions,
+	placePieceOnLevel,
+} from "@/src/utils";
 
 import styles from "./styles";
 
@@ -125,11 +129,17 @@ const allShynesAreBlack = (level: Level) => {
 
 export default function LevelScreen() {
 	const { id, score: scoreParam } = useLocalSearchParams();
-	const initialLevel = levelData[Number(id) - 1] || generateRandomLevel();
+	const [score, setScore] = useState(scoreParam ? Number(scoreParam) : 0);
+	const initialLevel =
+		levelData[Number(id) - 1] ||
+		generateRandomLevel(
+			3 + Math.floor(score / 5),
+			2 + Math.floor(score / 4),
+			2 + Math.floor(score / 6),
+		);
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
 	const [saveData, setSaveData] = useState<SaveData>(defaultSaveData);
-	const [score, setScore] = useState(scoreParam ? Number(scoreParam) : 0);
 
 	useEffect(() => {
 		async function load() {
@@ -411,17 +421,26 @@ export default function LevelScreen() {
 							if (!bounds) return;
 
 							const tileSize = bounds.width / level.numColumns;
-							const maxNumberOfTilesPieceWidth = item.numColumns;
+							const realPieceDimensions =
+								getPieceDimensions(item);
+							const maxNumberOfTilesPieceWidth =
+								realPieceDimensions.width;
+							const maxNumberOfTilesPieceHeight =
+								realPieceDimensions.height;
+							const xPosition =
+								position.x -
+								(tileSize * (maxNumberOfTilesPieceWidth - 1)) /
+									2 -
+								tileSize *
+									realPieceDimensions.columnsCroppedLeft;
+							const yPosition =
+								position.y -
+								tileSize * maxNumberOfTilesPieceHeight -
+								tileSize * realPieceDimensions.rowsCroppedTop;
 
 							setDragPosition({
-								x:
-									position.x -
-									(tileSize *
-										(maxNumberOfTilesPieceWidth - 1)) /
-										2,
-								y:
-									position.y -
-									tileSize * maxNumberOfTilesPieceWidth,
+								x: xPosition,
+								y: yPosition,
 							});
 						}}
 						onDrop={(position) => {
@@ -430,17 +449,26 @@ export default function LevelScreen() {
 							if (!bounds) return;
 
 							const tileSize = bounds.width / level.numColumns;
-							const maxNumberOfTilesPieceWidth = item.numColumns;
+							const realPieceDimensions =
+								getPieceDimensions(item);
+							const maxNumberOfTilesPieceWidth =
+								realPieceDimensions.width;
+							const maxNumberOfTilesPieceHeight =
+								realPieceDimensions.height;
+							const xPosition =
+								position.x -
+								(tileSize * (maxNumberOfTilesPieceWidth - 1)) /
+									2 -
+								tileSize *
+									realPieceDimensions.columnsCroppedLeft;
+							const yPosition =
+								position.y -
+								tileSize * maxNumberOfTilesPieceHeight -
+								tileSize * realPieceDimensions.rowsCroppedTop;
 
 							handleDrop(item.id, {
-								x:
-									position.x -
-									(tileSize *
-										(maxNumberOfTilesPieceWidth - 1)) /
-										2,
-								y:
-									position.y -
-									tileSize * maxNumberOfTilesPieceWidth,
+								x: xPosition,
+								y: yPosition,
 							});
 
 							setDraggingPiece(null);

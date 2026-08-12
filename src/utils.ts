@@ -1,4 +1,4 @@
-import { Level } from "./data/levelData";
+import { Level, Piece } from "./data/levelData";
 
 function generateRandomBoard(
 	gridSize: number,
@@ -37,11 +37,15 @@ function generateRandomBoard(
 	};
 }
 
-function generateRandomPiece(gridSize: number) {
+function generateRandomPiece(gridSize: number, blackTileProbability: number) {
 	const numberOfTiles = gridSize * gridSize;
 	const tiles = Array.from({ length: numberOfTiles }, () => ({
-		color: Math.random() < 0.5 ? "black" : "clear",
+		color: Math.random() < blackTileProbability ? "black" : "clear",
 	}));
+	if (!tiles.some((tile) => tile.color === "black")) {
+		const randomIndex = Math.floor(Math.random() * numberOfTiles);
+		tiles[randomIndex].color = "black";
+	}
 	return {
 		id: 1,
 		tiles,
@@ -50,10 +54,10 @@ function generateRandomPiece(gridSize: number) {
 	};
 }
 
-function generateRandomPieces(numberOfPieces: number) {
+function generateRandomPieces(numberOfPieces: number, pieceGridSize: number) {
 	return {
 		pieces: Array.from({ length: numberOfPieces }, (_, index) => ({
-			...generateRandomPiece(3),
+			...generateRandomPiece(pieceGridSize, 0.3),
 			id: index + 1,
 		})),
 	};
@@ -147,9 +151,13 @@ function resetAllPiecesToUnplaced(level: Level): Level {
 	};
 }
 
-export function generateRandomLevel() {
-	const pieces = generateRandomPieces(3);
-	const board = generateRandomBoard(5, 0, false);
+export function generateRandomLevel(
+	boardGridSize: number,
+	numberOfPieces: number,
+	pieceGridSize: number,
+) {
+	const pieces = generateRandomPieces(numberOfPieces, pieceGridSize);
+	const board = generateRandomBoard(boardGridSize, 0, false);
 
 	let level: Level = {
 		...board,
@@ -189,4 +197,43 @@ export function generateRandomLevel() {
 	level = resetAllPiecesToUnplaced(level);
 
 	return level;
+}
+
+export function getPieceDimensions(piece: Piece) {
+	const { tiles, numColumns } = piece;
+	const numRows = Math.ceil(tiles.length / numColumns);
+
+	let minRow = numRows;
+	let maxRow = -1;
+	let minCol = numColumns;
+	let maxCol = -1;
+
+	for (let i = 0; i < tiles.length; i++) {
+		if (tiles[i].color === "clear") continue;
+
+		const row = Math.floor(i / numColumns);
+		const col = i % numColumns;
+
+		minRow = Math.min(minRow, row);
+		maxRow = Math.max(maxRow, row);
+		minCol = Math.min(minCol, col);
+		maxCol = Math.max(maxCol, col);
+	}
+
+	// No non-clear tiles
+	if (maxRow === -1) {
+		return {
+			width: 0,
+			height: 0,
+			rowsCroppedTop: 0,
+			columnsCroppedLeft: 0,
+		};
+	}
+
+	return {
+		width: maxCol - minCol + 1,
+		height: maxRow - minRow + 1,
+		rowsCroppedTop: minRow,
+		columnsCroppedLeft: minCol,
+	};
 }
