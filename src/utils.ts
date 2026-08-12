@@ -91,6 +91,8 @@ export function placePieceOnLevel(
 
 		if (
 			TILE_INDEX >= level.tiles.length ||
+			row < 0 ||
+			col < 0 ||
 			level.tiles[TILE_INDEX].color === "red" ||
 			level.tiles[TILE_INDEX].color === "green" ||
 			col >= level.numColumns

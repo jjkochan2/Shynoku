@@ -157,41 +157,39 @@ export default function LevelScreen() {
 	) => {
 		if (!boardBounds) return;
 
-		const isWithinBoundaries = (
-			position: {
-				x: number;
-				y: number;
-			},
-			boundaries: {
-				x: number;
-				y: number;
-				width: number;
-				height: number;
-			},
-		): boolean => {
-			if (
-				position.x > boundaries.x &&
-				position.x < boundaries.x + boundaries.width &&
-				position.y > boundaries.y &&
-				position.y < boundaries.y + boundaries.height
-			) {
-				return true;
-			} else {
-				return false;
-			}
-		};
+		// const isWithinBoundaries = (
+		// 	position: {
+		// 		x: number;
+		// 		y: number;
+		// 	},
+		// 	boundaries: {
+		// 		x: number;
+		// 		y: number;
+		// 		width: number;
+		// 		height: number;
+		// 	},
+		// ): boolean => {
+		// 	if (
+		// 		position.x > boundaries.x &&
+		// 		position.x < boundaries.x + boundaries.width &&
+		// 		position.y > boundaries.y &&
+		// 		position.y < boundaries.y + boundaries.height
+		// 	) {
+		// 		return true;
+		// 	} else {
+		// 		return false;
+		// 	}
+		// };
 
-		if (isWithinBoundaries(position, boardBounds)) {
-			const relativeX = position.x - boardBounds.x;
-			const relativeY = position.y - boardBounds.y;
+		const relativeX = position.x - boardBounds.x;
+		const relativeY = position.y - boardBounds.y;
 
-			const cellSize = boardBounds.width / level.numColumns;
+		const cellSize = boardBounds.width / level.numColumns;
 
-			const col = Math.floor(relativeX / cellSize);
-			const row = Math.floor(relativeY / cellSize);
+		const col = Math.floor(relativeX / cellSize);
+		const row = Math.floor(relativeY / cellSize);
 
-			placePiece(pieceId, { row, col });
-		}
+		placePiece(pieceId, { row, col });
 	};
 	const boardRef = useRef<View>(null);
 
