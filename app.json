@@ -2,7 +2,7 @@
 	"expo": {
 		"name": "Shynoku",
 		"slug": "Shynoku",
-		"version": "1.0.0",
+		"version": "1.1.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/icon.png",
 		"scheme": "shynoku",
@@ -56,6 +56,12 @@
 			"eas": {
 				"projectId": "b05bc1d6-e56e-4a4b-8f8c-3c33e67cdb84"
 			}
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"updates": {
+			"url": "https://u.expo.dev/b05bc1d6-e56e-4a4b-8f8c-3c33e67cdb84"
 		}
 	}
 }
