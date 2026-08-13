@@ -57,7 +57,7 @@ function generateRandomPiece(gridSize: number, blackTileProbability: number) {
 function generateRandomPieces(numberOfPieces: number, pieceGridSize: number) {
 	return {
 		pieces: Array.from({ length: numberOfPieces }, (_, index) => ({
-			...generateRandomPiece(pieceGridSize, 0.3),
+			...generateRandomPiece(pieceGridSize, 0.4),
 			id: index + 1,
 		})),
 	};

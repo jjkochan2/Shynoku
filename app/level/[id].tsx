@@ -144,9 +144,9 @@ export default function LevelScreen() {
 	const initialLevel =
 		levelData[Number(id) - 1] ||
 		generateRandomLevel(
-			Math.min(3 + Math.floor(score / 5), 7),
+			Math.min(3 + Math.floor(Math.log10(score || 1)), 6),
 			3,
-			Math.min(2 + Math.floor(score / 6), 5),
+			Math.min(2 + Math.floor(Math.log10(score || 1)), 5),
 		);
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
@@ -365,9 +365,11 @@ export default function LevelScreen() {
 					>
 						<Ionicons name="help" size={24} color="white" />
 					</Pressable>
-					<Pressable onPress={() => handleRefreshPress()}>
-						<Ionicons name="refresh" size={28} color="white" />
-					</Pressable>
+					{id !== "endless" && (
+						<Pressable onPress={() => handleRefreshPress()}>
+							<Ionicons name="refresh" size={28} color="white" />
+						</Pressable>
+					)}
 				</View>
 			</View>
 			<View style={styles.title}>
@@ -619,8 +621,7 @@ export default function LevelScreen() {
 										fontSize: 24,
 									}}
 								>
-									There are NO redos in endless mode unless
-									your score is still 0.
+									There are NO redos in endless mode.
 								</Text>
 							</>
 						)}
