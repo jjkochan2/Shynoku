@@ -6,7 +6,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
-import { Level, levelData, Tile } from "@/src/data/levelData";
+import { Level, levelData } from "@/src/data/levelData";
 import {
 	defaultSaveData,
 	getSaveData,
@@ -14,140 +14,46 @@ import {
 	updateSaveData,
 } from "@/src/data/localStorage";
 import {
+	allShynesAreBlack,
 	generateRandomLevel,
 	getPieceDimensions,
+	isLevelSolved,
 	placePieceOnLevel,
+	randomIntInclusive,
 } from "@/src/utils";
 
 import styles from "./styles";
 
-const isLevelSolved = (level: Level) => {
-	type Board = {
-		tiles: Tile[];
-		numColumns: number;
-	};
-
-	function pathExists(
-		board: Board,
-		startIndex: number,
-		endIndex: number,
-	): boolean {
-		if (Number.isNaN(startIndex) || Number.isNaN(endIndex)) return false;
-		if (startIndex === -1 || endIndex === -1)
-			return allShynesAreBlack(level) && allNonShynesAreNotBlack(level);
-		const { tiles, numColumns } = board;
-		const numRows = Math.ceil(tiles.length / numColumns);
-
-		const isTraversable = (tile: Tile) =>
-			tile.color === "black" ||
-			tile.color === "green" ||
-			tile.color === "red";
-
-		if (
-			!isTraversable(tiles[startIndex]) ||
-			!isTraversable(tiles[endIndex])
-		) {
-			return false;
-		}
-
-		const visited = new Array(tiles.length).fill(false);
-		const queue: number[] = [startIndex];
-		visited[startIndex] = true;
-
-		const directions = [
-			[-1, 0], // up
-			[1, 0], // down
-			[0, -1], // left
-			[0, 1], // right
-		];
-
-		while (queue.length > 0) {
-			const current = queue.shift()!;
-
-			if (current === endIndex) {
-				return true;
-			}
-
-			const row = Math.floor(current / numColumns);
-			const col = current % numColumns;
-
-			for (const [dr, dc] of directions) {
-				const newRow = row + dr;
-				const newCol = col + dc;
-
-				if (
-					newRow < 0 ||
-					newRow >= numRows ||
-					newCol < 0 ||
-					newCol >= numColumns
-				) {
-					continue;
-				}
-
-				const neighbor = newRow * numColumns + newCol;
-
-				if (
-					neighbor < tiles.length &&
-					isTraversable(tiles[neighbor]) &&
-					!visited[neighbor]
-				) {
-					visited[neighbor] = true;
-					queue.push(neighbor);
-				}
-			}
-		}
-
-		return false;
-	}
-
-	const startIndex = level.tiles.findIndex((tile) => tile.color === "green");
-	const endIndex = level.tiles.findIndex((tile) => tile.color === "red");
-	const board = {
-		tiles: level.tiles,
-		numColumns: level.numColumns,
-	};
-	if (
-		level.pieces.every((piece) => piece.placed) &&
-		pathExists(board, startIndex, endIndex)
-	) {
-		return true;
-	} else {
-		return false;
-	}
-};
-
-const allShynesAreBlack = (level: Level) => {
-	for (const tile of level.tiles) {
-		if (tile.shyne) {
-			if (tile.color !== "black") {
-				return false;
-			}
-		}
-	}
-	return true;
-};
-
-const allNonShynesAreNotBlack = (level: Level) => {
-	for (const tile of level.tiles) {
-		if (!tile.shyne) {
-			if (tile.color === "black") {
-				return false;
-			}
-		}
-	}
-	return true;
-};
-
 export default function LevelScreen() {
 	const { id, score: scoreParam } = useLocalSearchParams();
 	const [score, setScore] = useState(scoreParam ? Number(scoreParam) : 0);
-	const initialLevel =
-		levelData[Number(id) - 1] ||
-		generateRandomLevel(
+	let initialLevel: Level;
+
+	if (id === "endless") {
+		initialLevel = generateRandomLevel(
 			Math.min(3 + Math.floor(Math.log10(score || 1)), 6),
 			3,
 			Math.min(2 + Math.floor(Math.log10(score || 1)), 5),
 		);
+	} else if (id === "random") {
+		const gridSize = randomIntInclusive(3, 7);
+		const numberOfPieces = randomIntInclusive(2, 5);
+		const pieceGridSize = randomIntInclusive(2, gridSize);
+		initialLevel = generateRandomLevel(
+			gridSize,
+			numberOfPieces,
+			pieceGridSize,
+			"campaign",
+		);
+	} else {
+		const levelNumber = Number(id);
+		initialLevel = levelData[levelNumber - 1];
+
+		if (!initialLevel) {
+			throw new Error(`Invalid level id: ${id}`);
+		}
+	}
+
 	const [level, setLevel] = useState(initialLevel);
 	const [levelSolved, setLevelSolved] = useState(false);
 	const [saveData, setSaveData] = useState<SaveData>(defaultSaveData);
@@ -281,7 +187,7 @@ export default function LevelScreen() {
 			async function handleLevelSolved() {
 				setLevelSolved(true);
 				await updateSaveData((saveData) => {
-					if (id !== "endless") {
+					if (id !== "endless" && id !== "random") {
 						if (saveData.highestUnlockedLevel === Number(id)) {
 							saveData.highestUnlockedLevel = Number(id) + 1;
 						}
@@ -402,6 +308,13 @@ export default function LevelScreen() {
 								params: {
 									id: "endless",
 									score: score.toString(),
+								},
+							});
+						} else if (id === "random") {
+							router.replace({
+								pathname: "/level/[id]",
+								params: {
+									id: "random",
 								},
 							});
 						} else if (Number(id) < TOTAL_LEVELS) {

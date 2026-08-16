@@ -69,15 +69,26 @@ const styles = StyleSheet.create({
 export default function LevelSelectScreen() {
 	const router = useRouter();
 	const [saveData, setSaveData] = useState<SaveData>(defaultSaveData);
+	const LEVELS_PER_PAGE = 20;
+	const [page, setPage] = useState(0);
+	const maxedOutAccount = false;
+
+	const pageLevels = levelData.slice(
+		page * LEVELS_PER_PAGE,
+		(page + 1) * LEVELS_PER_PAGE,
+	);
+	const previousDisabled = page === 0;
+	const nextDisabled =
+		(page + 1) * LEVELS_PER_PAGE >= saveData.highestUnlockedLevel;
 
 	useFocusEffect(
 		useCallback(() => {
 			async function load() {
-				setSaveData(await getSaveData());
+				setSaveData(await getSaveData(maxedOutAccount));
 			}
 
 			load();
-		}, []),
+		}, [maxedOutAccount]),
 	);
 	return (
 		<SafeAreaView style={styles.levelSelectScreen}>
@@ -91,22 +102,64 @@ export default function LevelSelectScreen() {
 			</View>
 			<View style={styles.levelSelectGrid}>
 				<FlatList
-					data={levelData}
+					data={pageLevels}
 					numColumns={4}
-					keyExtractor={(_, index) => index.toString()}
-					renderItem={({ index }) => (
-						<LevelButton
-							levelNumber={index}
-							isUnlocked={
-								index + 1 <= saveData.highestUnlockedLevel
-							}
-							allShynesCollected={
-								saveData.levels[index].allShynesCollected
-							}
-						/>
-					)}
+					scrollEnabled={false}
+					keyExtractor={(_, index) =>
+						(page * LEVELS_PER_PAGE + index).toString()
+					}
+					renderItem={({ index }) => {
+						const levelIndex = page * LEVELS_PER_PAGE + index;
+
+						return (
+							<LevelButton
+								levelNumber={levelIndex}
+								isUnlocked={
+									levelIndex + 1 <=
+									saveData.highestUnlockedLevel
+								}
+								allShynesCollected={
+									saveData.levels[levelIndex]
+										.allShynesCollected
+								}
+							/>
+						);
+					}}
 				/>
 			</View>
+			<View
+				style={{
+					flexDirection: "row",
+					alignItems: "center",
+					justifyContent: "space-between",
+					width: "100%",
+					paddingHorizontal: 24,
+				}}
+			>
+				<Pressable
+					onPress={() => setPage(page - 1)}
+					disabled={previousDisabled}
+					style={{ opacity: previousDisabled ? 0 : 1 }}
+				>
+					<Ionicons name="chevron-back" size={28} color="white" />
+				</Pressable>
+
+				<Pressable
+					onPress={() => setPage(page + 1)}
+					disabled={nextDisabled}
+					style={{ opacity: nextDisabled ? 0 : 1 }}
+				>
+					<Ionicons name="chevron-forward" size={28} color="white" />
+				</Pressable>
+			</View>
+			{/* <View>
+				<GameButton
+					text="Random Level"
+					onPress={() => {
+						router.navigate("/level/random")
+					}}
+				/>
+			</View> */}
 			<GameButton
 				text="Endless Mode"
 				onPress={() => {

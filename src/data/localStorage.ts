@@ -20,12 +20,35 @@ export const defaultSaveData: SaveData = {
 	endlessHighScore: 0,
 };
 
+export const maxedSavaData: SaveData = {
+	highestUnlockedLevel: levelData.length,
+	levels: levelData.map(() => ({
+		allShynesCollected: true,
+	})),
+	endlessHighScore: 0,
+};
+
 const KEY = "saveData";
 
-export async function getSaveData(): Promise<SaveData> {
+export async function getSaveData(max: boolean = false): Promise<SaveData> {
+	if (max) {
+		return maxedSavaData;
+	}
 	const value = await AsyncStorage.getItem(KEY);
 
-	return value ? JSON.parse(value) : defaultSaveData;
+	if (!value) {
+		return defaultSaveData;
+	}
+
+	const savedData: Partial<SaveData> = JSON.parse(value);
+
+	return {
+		...defaultSaveData,
+		...savedData,
+		levels: defaultSaveData.levels.map(
+			(defaultLevel, index) => savedData.levels?.[index] ?? defaultLevel,
+		),
+	};
 }
 
 export async function unlockLevel(levelNumber: number) {
