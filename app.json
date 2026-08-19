@@ -9,7 +9,11 @@
 		"userInterfaceStyle": "automatic",
 		"ios": {
 			"supportsTablet": true,
+			"deploymentTarget": "16.4",
 			"bundleIdentifier": "com.jjkochan.Shynoku",
+			"entitlements": {
+				"com.apple.developer.game-center": true
+			},
 			"infoPlist": {
 				"ITSAppUsesNonExemptEncryption": false
 			}

@@ -3,8 +3,17 @@ import { useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import GameCenterModule from "@/modules/game-center/src/GameCenterModule";
 import GameButton from "@/src/components/GameButton";
 import { colors } from "@/src/theme/colors";
+
+const handleGameCenterPress = async () => {
+	try {
+		await GameCenterModule.showGameCenter();
+	} catch (error) {
+		console.error("Game Center error:", error);
+	}
+};
 
 const styles = StyleSheet.create({
 	titleScreen: {
@@ -66,9 +75,7 @@ export default function TitleScreen() {
 							color="white"
 						/>
 					}
-					onPress={() => {
-						router.navigate("/leaderboards");
-					}}
+					onPress={handleGameCenterPress}
 					style={{
 						paddingHorizontal: 12,
 						paddingVertical: 12,
