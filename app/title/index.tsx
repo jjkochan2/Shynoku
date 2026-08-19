@@ -1,5 +1,7 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import GameButton from "@/src/components/GameButton";
 import { colors } from "@/src/theme/colors";
@@ -13,6 +15,11 @@ const styles = StyleSheet.create({
 
 	topSpacer: {
 		flex: 1,
+		// flexDirection: 'row',
+		alignItems: "flex-end",
+		// borderWidth: 2,
+		paddingHorizontal: 24,
+		width: "100%",
 	},
 
 	bottomSpacer: {
@@ -49,8 +56,25 @@ const styles = StyleSheet.create({
 export default function TitleScreen() {
 	const router = useRouter();
 	return (
-		<View style={styles.titleScreen}>
-			<View style={styles.topSpacer}></View>
+		<SafeAreaView style={styles.titleScreen}>
+			<View style={styles.topSpacer}>
+				<GameButton
+					icon={
+						<MaterialIcons
+							name="leaderboard"
+							size={24}
+							color="white"
+						/>
+					}
+					onPress={() => {
+						router.navigate("/leaderboards");
+					}}
+					style={{
+						paddingHorizontal: 12,
+						paddingVertical: 12,
+					}}
+				/>
+			</View>
 
 			<View style={styles.title}>
 				<Text style={styles.titleText}>Shynoku</Text>
@@ -64,6 +88,6 @@ export default function TitleScreen() {
 					}}
 				/>
 			</View>
-		</View>
+		</SafeAreaView>
 	);
 }
