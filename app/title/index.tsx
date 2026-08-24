@@ -1,5 +1,6 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -64,6 +65,29 @@ const styles = StyleSheet.create({
 
 export default function TitleScreen() {
 	const router = useRouter();
+
+	const [result, setResult] = useState("awaiting test");
+	const [testScoreValue, setTestScoreValue] = useState(100);
+
+	const testScore = async () => {
+		try {
+			const authenticated = await GameCenterModule.authenticateAsync();
+			setResult(`Authenticated: ${authenticated}`);
+
+			if (!authenticated) return;
+
+			await GameCenterModule.submitScore(
+				testScoreValue,
+				"endless_high_score",
+			);
+			setTestScoreValue(testScoreValue + 1);
+
+			setResult(`SUBMISSION SUCCEEDED: ${testScoreValue}`);
+		} catch (error) {
+			setResult(`SUBMISSION FAILED: ${String(error)}`);
+		}
+	};
+
 	return (
 		<SafeAreaView style={styles.titleScreen}>
 			<View style={styles.topSpacer}>
@@ -94,6 +118,11 @@ export default function TitleScreen() {
 						router.navigate("/levelSelect");
 					}}
 				/>
+				<GameButton
+					text={`test endless highscore submission ${testScoreValue}`}
+					onPress={testScore}
+				/>
+				<Text>{result}</Text>
 			</View>
 		</SafeAreaView>
 	);
