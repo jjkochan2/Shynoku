@@ -47,6 +47,15 @@ public class GameCenterModule: Module {
       self.present(viewController)
     }
     .runOnQueue(.main)
+
+    AsyncFunction("submitScore") { (score: Int, leaderboardID: String) in
+        try await GKLeaderboard.submitScore(
+            score,
+            context: 0,
+            player: GKLocalPlayer.local,
+            leaderboardIDs: [leaderboardID]
+        )
+    }
   }
 
   private func present(_ viewController: UIViewController) {

@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Alert, Modal, Pressable, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import GameCenterModule from "@/modules/game-center/src/GameCenterModule";
 import Board from "@/src/components/Board";
 import Piece from "@/src/components/Piece";
 import { Level, levelData } from "@/src/data/levelData";
@@ -206,6 +207,29 @@ export default function LevelScreen() {
 						setScore((prevScore) => prevScore + 1);
 					}
 				});
+				if (
+					id === "endless" &&
+					(!saveData.endlessHighScore ||
+						score + 1 > saveData.endlessHighScore)
+				) {
+					try {
+						const authenticated =
+							await GameCenterModule.authenticateAsync();
+
+						if (!authenticated) {
+							console.log("Not authenticated with Game Center");
+							return;
+						}
+						await GameCenterModule.submitScore(
+							score + 1,
+							"endless_high_score",
+						);
+
+						console.log("Score submitted!");
+					} catch (error) {
+						console.error("Score submission failed:", error);
+					}
+				}
 
 				if (allShynesAreBlack(level)) {
 					colorAllPathTiles("aqua");
@@ -215,7 +239,14 @@ export default function LevelScreen() {
 			}
 			handleLevelSolved();
 		}
-	}, [level, levelSolved, saveData.highestUnlockedLevel, id, score]);
+	}, [
+		level,
+		levelSolved,
+		saveData.highestUnlockedLevel,
+		id,
+		score,
+		saveData.endlessHighScore,
+	]);
 
 	const [showHelp, setShowHelp] = useState(false);
 
