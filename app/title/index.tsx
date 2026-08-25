@@ -1,11 +1,12 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import GameCenterModule from "@/modules/game-center/src/GameCenterModule";
 import GameButton from "@/src/components/GameButton";
+import { getSaveData, SaveData } from "@/src/data/localStorage";
 import { colors } from "@/src/theme/colors";
 
 const handleGameCenterPress = async () => {
@@ -66,27 +67,59 @@ const styles = StyleSheet.create({
 export default function TitleScreen() {
 	const router = useRouter();
 
-	const [result, setResult] = useState("awaiting test");
-	const [testScoreValue, setTestScoreValue] = useState(100);
+	const [saveData, setSaveData] = useState<SaveData | null>(null);
+	const [isGameCenterAuthenticated, setIsGameCenterAuthenticated] =
+		useState(false);
 
-	const testScore = async () => {
-		try {
-			const authenticated = await GameCenterModule.authenticateAsync();
-			setResult(`Authenticated: ${authenticated}`);
+	useEffect(() => {
+		const initialize = async () => {
+			const data = await getSaveData();
+			setSaveData(data);
 
-			if (!authenticated) return;
+			const authenticated = await GameCenterModule.isAuthenticated();
+			setIsGameCenterAuthenticated(authenticated);
+		};
 
-			await GameCenterModule.submitScore(
-				testScoreValue,
-				"endless_high_score",
-			);
-			setTestScoreValue(testScoreValue + 1);
+		initialize();
+	}, []);
 
-			setResult(`SUBMISSION SUCCEEDED: ${testScoreValue}`);
-		} catch (error) {
-			setResult(`SUBMISSION FAILED: ${String(error)}`);
-		}
-	};
+	useEffect(() => {
+		const subscription = GameCenterModule.addListener(
+			"onAuthenticated",
+			({ playerID }) => {
+				console.log("Game Center authenticated:", playerID);
+				setIsGameCenterAuthenticated(true);
+			},
+		);
+
+		return () => subscription.remove();
+	}, []);
+	useEffect(() => {
+		if (!isGameCenterAuthenticated || !saveData) return;
+		if (saveData.endlessHighScore < 1) return;
+
+		const updateGameCenterScore = async () => {
+			try {
+				const gameCenterScore =
+					await GameCenterModule.getScore("endless_high_score");
+				const localScore = saveData.endlessHighScore;
+
+				if (!gameCenterScore || localScore > gameCenterScore) {
+					await GameCenterModule.submitScore(
+						localScore,
+						"endless_high_score",
+					);
+					console.log("High score migrated to Game Center!");
+				} else {
+					console.log("Game Center score already up to date.");
+				}
+			} catch (error) {
+				console.error("Game Center migration failed:", error);
+			}
+		};
+
+		updateGameCenterScore();
+	}, [isGameCenterAuthenticated, saveData]);
 
 	return (
 		<SafeAreaView style={styles.titleScreen}>
@@ -118,11 +151,6 @@ export default function TitleScreen() {
 						router.navigate("/levelSelect");
 					}}
 				/>
-				<GameButton
-					text={`test endless highscore submission ${testScoreValue}`}
-					onPress={testScore}
-				/>
-				<Text>{result}</Text>
 			</View>
 		</SafeAreaView>
 	);

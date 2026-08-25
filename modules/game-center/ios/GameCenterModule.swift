@@ -12,31 +12,43 @@ private class GameCenterDelegate: NSObject, GKGameCenterControllerDelegate {
 
 public class GameCenterModule: Module {
   private let gameCenterDelegate = GameCenterDelegate()
+  private var hasSentAuthenticationEvent = false
 
   public func definition() -> ModuleDefinition {
     Name("GameCenter")
+
+    Events("onAuthenticated")
 
     AsyncFunction("authenticateAsync") { (promise: Promise) in
       let localPlayer = GKLocalPlayer.local
 
       if localPlayer.isAuthenticated {
+        self.sendAuthenticationEventIfNeeded()
         promise.resolve(true)
         return
       }
 
-      localPlayer.authenticateHandler = { viewController, error in
+      localPlayer.authenticateHandler = { [weak self] viewController, error in
         if let viewController {
-          self.present(viewController)
+          self?.present(viewController)
           return
         }
 
         if let error {
-          print("Game Center authentication error: \(error.localizedDescription)")
+          print(
+            "Game Center authentication error: \(error.localizedDescription)"
+          )
           promise.resolve(false)
           return
         }
 
-        promise.resolve(localPlayer.isAuthenticated)
+        let authenticated = localPlayer.isAuthenticated
+
+        if authenticated {
+          self?.sendAuthenticationEventIfNeeded()
+        }
+
+        promise.resolve(authenticated)
       }
     }
     .runOnQueue(.main)
@@ -49,13 +61,89 @@ public class GameCenterModule: Module {
     .runOnQueue(.main)
 
     AsyncFunction("submitScore") { (score: Int, leaderboardID: String) in
-        try await GKLeaderboard.submitScore(
-            score,
-            context: 0,
-            player: GKLocalPlayer.local,
-            leaderboardIDs: [leaderboardID]
-        )
+      try await GKLeaderboard.submitScore(
+        score,
+        context: 0,
+        player: GKLocalPlayer.local,
+        leaderboardIDs: [leaderboardID]
+      )
     }
+
+    AsyncFunction("isAuthenticated") {
+      GKLocalPlayer.local.isAuthenticated
+    }
+
+    AsyncFunction("getScore") { (leaderboardID: String) -> Int? in
+    let leaderboards = try await GKLeaderboard.loadLeaderboards(
+      IDs: [leaderboardID]
+    )
+
+    guard let leaderboard = leaderboards.first else {
+      throw NSError(
+        domain: "GameCenter",
+        code: 1,
+        userInfo: [
+          NSLocalizedDescriptionKey: "Leaderboard not found"
+        ]
+      )
+    }
+
+    let result = try await leaderboard.loadEntries(
+      for: GKLeaderboard.PlayerScope.global,
+      timeScope: GKLeaderboard.TimeScope.allTime,
+      range: NSRange(location: 1, length: 100)
+    )
+
+    return result.0?.score
+  }
+
+    OnCreate {
+      self.setupAuthenticationHandler()
+    }
+  }
+
+  private func setupAuthenticationHandler() {
+    let localPlayer = GKLocalPlayer.local
+
+    localPlayer.authenticateHandler = { [weak self] viewController, error in
+      if let viewController {
+        self?.present(viewController)
+        return
+      }
+
+      if let error {
+        print(
+          "Game Center authentication error: \(error.localizedDescription)"
+        )
+        return
+      }
+
+      self?.sendAuthenticationEventIfNeeded()
+    }
+
+    // Handle the case where Game Center is already authenticated.
+    sendAuthenticationEventIfNeeded()
+  }
+
+  private func sendAuthenticationEventIfNeeded() {
+    let localPlayer = GKLocalPlayer.local
+
+    guard localPlayer.isAuthenticated else {
+      return
+    }
+
+    guard !hasSentAuthenticationEvent else {
+      return
+    }
+
+    hasSentAuthenticationEvent = true
+
+    sendEvent(
+      "onAuthenticated",
+      [
+        "playerID": localPlayer.gamePlayerID
+      ]
+    )
   }
 
   private func present(_ viewController: UIViewController) {
