@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 		gap: 24,
 	},
 	titleText: {
-		color: "white",
+		color: colors.white,
 		fontSize: 24,
 		fontWeight: 600,
 	},
@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
 		paddingVertical: 6,
 	},
 	nextLevelText: {
-		color: "white",
+		color: colors.white,
 		fontWeight: 600,
 	},
 });

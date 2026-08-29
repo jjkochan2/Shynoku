@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		gap: 12,
 	},
 	levelButton: {
-		backgroundColor: "black",
+		backgroundColor: colors.black,
 		padding: 8,
 		borderRadius: 12,
 		width: 75,
@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	levelButtonText: {
-		color: "white",
+		color: colors.white,
 		fontWeight: "600",
 		fontSize: 24,
 	},
@@ -48,12 +48,12 @@ const styles = StyleSheet.create({
 	},
 	titleText: {
 		fontSize: 32,
-		color: "white",
+		color: colors.white,
 		fontWeight: "600",
 	},
 	subTitleText: {
 		fontSize: 24,
-		color: "white",
+		color: colors.white,
 		fontWeight: "400",
 	},
 	titleTextContainer: {},
@@ -95,7 +95,11 @@ export default function LevelSelectScreen() {
 			<View style={styles.title}>
 				<View style={styles.backArrow}>
 					<Pressable onPress={() => router.navigate("/title")}>
-						<Ionicons name="chevron-back" size={28} color="white" />
+						<Ionicons
+							name="chevron-back"
+							size={28}
+							color={colors.white}
+						/>
 					</Pressable>
 				</View>
 				<Text style={styles.titleText}>Levels</Text>
@@ -141,7 +145,11 @@ export default function LevelSelectScreen() {
 					disabled={previousDisabled}
 					style={{ opacity: previousDisabled ? 0 : 1 }}
 				>
-					<Ionicons name="chevron-back" size={28} color="white" />
+					<Ionicons
+						name="chevron-back"
+						size={28}
+						color={colors.white}
+					/>
 				</Pressable>
 
 				<Pressable
@@ -149,7 +157,11 @@ export default function LevelSelectScreen() {
 					disabled={nextDisabled}
 					style={{ opacity: nextDisabled ? 0 : 1 }}
 				>
-					<Ionicons name="chevron-forward" size={28} color="white" />
+					<Ionicons
+						name="chevron-forward"
+						size={28}
+						color={colors.white}
+					/>
 				</Pressable>
 			</View>
 			{/* <View>

@@ -1,5 +1,7 @@
 import { StyleSheet, View } from "react-native";
 
+import { colors } from "../theme/colors";
+
 const styles = StyleSheet.create({
 	wrapper: {
 		flex: 1,
@@ -26,7 +28,7 @@ export default function Tile({ color, shyne = false }: TileProps) {
 				{shyne && (
 					<View
 						style={{
-							backgroundColor: "aqua",
+							backgroundColor: colors.aqua,
 							width: "30%",
 							height: "30%",
 						}}

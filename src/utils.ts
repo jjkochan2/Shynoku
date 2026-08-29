@@ -1,9 +1,10 @@
 import { Level, Piece, Tile } from "./data/levelData";
+import { colors } from "./theme/colors";
 
 export const allShynesAreBlack = (level: Level) => {
 	for (const tile of level.tiles) {
 		if (tile.shyne) {
-			if (tile.color !== "black") {
+			if (tile.color !== colors.black) {
 				return false;
 			}
 		}
@@ -14,7 +15,7 @@ export const allShynesAreBlack = (level: Level) => {
 const allNonShynesAreNotBlack = (level: Level) => {
 	for (const tile of level.tiles) {
 		if (!tile.shyne) {
-			if (tile.color === "black") {
+			if (tile.color === colors.black) {
 				return false;
 			}
 		}
@@ -40,9 +41,9 @@ export const isLevelSolved = (level: Level) => {
 		const numRows = Math.ceil(tiles.length / numColumns);
 
 		const isTraversable = (tile: Tile) =>
-			tile.color === "black" ||
-			tile.color === "green" ||
-			tile.color === "red";
+			tile.color === colors.black ||
+			tile.color === colors.green ||
+			tile.color === colors.red;
 
 		if (
 			!isTraversable(tiles[startIndex]) ||
@@ -101,8 +102,10 @@ export const isLevelSolved = (level: Level) => {
 		return false;
 	}
 
-	const startIndex = level.tiles.findIndex((tile) => tile.color === "green");
-	const endIndex = level.tiles.findIndex((tile) => tile.color === "red");
+	const startIndex = level.tiles.findIndex(
+		(tile) => tile.color === colors.green,
+	);
+	const endIndex = level.tiles.findIndex((tile) => tile.color === colors.red);
 	const board = {
 		tiles: level.tiles,
 		numColumns: level.numColumns,
@@ -126,7 +129,7 @@ function generateRandomBoard(
 	const numberOfTiles = gridSize * gridSize;
 
 	const tiles = Array.from({ length: numberOfTiles }, () => ({
-		color: "white",
+		color: colors.white,
 		shyne: Math.random() < shyneProbability,
 	}));
 
@@ -158,12 +161,12 @@ function generateRandomBoard(
 		}
 
 		tiles[greenIndex] = {
-			color: "green",
+			color: colors.green,
 			shyne: false,
 		};
 
 		tiles[redIndex] = {
-			color: "red",
+			color: colors.red,
 			shyne: false,
 		};
 	}
@@ -177,11 +180,12 @@ function generateRandomBoard(
 function generateRandomPiece(gridSize: number, blackTileProbability: number) {
 	const numberOfTiles = gridSize * gridSize;
 	const tiles = Array.from({ length: numberOfTiles }, () => ({
-		color: Math.random() < blackTileProbability ? "black" : "clear",
+		color:
+			Math.random() < blackTileProbability ? colors.black : colors.clear,
 	}));
-	if (!tiles.some((tile) => tile.color === "black")) {
+	if (!tiles.some((tile) => tile.color === colors.black)) {
 		const randomIndex = Math.floor(Math.random() * numberOfTiles);
-		tiles[randomIndex].color = "black";
+		tiles[randomIndex].color = colors.black;
 	}
 	return {
 		id: 1,
@@ -218,7 +222,7 @@ export function placePieceOnLevel(
 	const newTiles = [...level.tiles];
 
 	for (let i = 0; i < placedPiece.tiles.length; i++) {
-		if (placedPiece.tiles[i].color === "clear") {
+		if (placedPiece.tiles[i].color === colors.clear) {
 			continue;
 		}
 
@@ -232,22 +236,22 @@ export function placePieceOnLevel(
 			TILE_INDEX >= level.tiles.length ||
 			row < 0 ||
 			col < 0 ||
-			level.tiles[TILE_INDEX].color === "red" ||
-			level.tiles[TILE_INDEX].color === "green" ||
+			level.tiles[TILE_INDEX].color === colors.red ||
+			level.tiles[TILE_INDEX].color === colors.green ||
 			col >= level.numColumns
 		) {
 			return level;
 		}
 
-		if (level.tiles[TILE_INDEX].color === "white") {
+		if (level.tiles[TILE_INDEX].color === colors.white) {
 			newTiles[TILE_INDEX] = {
 				...newTiles[TILE_INDEX],
 				color: placedPiece.tiles[i].color,
 			};
-		} else if (level.tiles[TILE_INDEX].color === "black") {
+		} else if (level.tiles[TILE_INDEX].color === colors.black) {
 			newTiles[TILE_INDEX] = {
 				...newTiles[TILE_INDEX],
-				color: "white",
+				color: colors.white,
 			};
 		}
 	}
@@ -275,8 +279,8 @@ function replaceAllBlackTilesWithWhiteAndShynes(level: Level): Level {
 	return {
 		...level,
 		tiles: level.tiles.map((tile) =>
-			tile.color === "black"
-				? { ...tile, color: "white", shyne: true }
+			tile.color === colors.black
+				? { ...tile, color: colors.white, shyne: true }
 				: tile,
 		),
 	};
@@ -293,13 +297,14 @@ function resetAllPiecesToUnplaced(level: Level): Level {
 }
 
 function numberOfBlackTilesOnBoard(level: Level): number {
-	return level.tiles.filter((tile) => tile.color === "black").length;
+	return level.tiles.filter((tile) => tile.color === colors.black).length;
 }
 
 function numberOfBlackTilesOnPieces(level: Level): number {
 	return level.pieces.reduce(
 		(total, piece) =>
-			total + piece.tiles.filter((tile) => tile.color === "black").length,
+			total +
+			piece.tiles.filter((tile) => tile.color === colors.black).length,
 		0,
 	);
 }
@@ -415,7 +420,7 @@ export function getPieceDimensions(piece: Piece) {
 	let maxCol = -1;
 
 	for (let i = 0; i < tiles.length; i++) {
-		if (tiles[i].color === "clear") continue;
+		if (tiles[i].color === colors.clear) continue;
 
 		const row = Math.floor(i / numColumns);
 		const col = i % numColumns;
