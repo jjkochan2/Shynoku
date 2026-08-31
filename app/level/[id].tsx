@@ -14,6 +14,7 @@ import {
 	SaveData,
 	updateSaveData,
 } from "@/src/data/localStorage";
+import { colors } from "@/src/theme/colors";
 import {
 	allShynesAreBlack,
 	generateRandomLevel,
@@ -135,7 +136,11 @@ export default function LevelScreen() {
 	>(null);
 
 	const colorAllPathTiles = (color: string) => {
-		const colorsToReplace = new Set(["red", "green", "black"]);
+		const colorsToReplace = new Set([
+			colors.red,
+			colors.green,
+			colors.black,
+		]);
 
 		setLevel((prevLevel) => ({
 			...prevLevel,
@@ -232,9 +237,9 @@ export default function LevelScreen() {
 				}
 
 				if (allShynesAreBlack(level)) {
-					colorAllPathTiles("aqua");
+					colorAllPathTiles(colors.aqua);
 				} else {
-					colorAllPathTiles("green");
+					colorAllPathTiles(colors.green);
 				}
 			}
 			handleLevelSolved();
@@ -282,7 +287,11 @@ export default function LevelScreen() {
 		<SafeAreaView style={styles.container}>
 			<View style={styles.navigationBar}>
 				<Pressable onPress={() => handleBackButtonPress()}>
-					<Ionicons name="chevron-back" size={28} color="white" />
+					<Ionicons
+						name="chevron-back"
+						size={28}
+						color={colors.white}
+					/>
 				</Pressable>
 				<View
 					style={{
@@ -293,18 +302,22 @@ export default function LevelScreen() {
 					<Pressable
 						style={{
 							borderWidth: 2,
-							borderColor: "white",
+							borderColor: colors.white,
 							borderRadius: 999,
 						}}
 						onPress={() => {
 							setShowHelp(true);
 						}}
 					>
-						<Ionicons name="help" size={24} color="white" />
+						<Ionicons name="help" size={24} color={colors.white} />
 					</Pressable>
 					{id !== "endless" && (
 						<Pressable onPress={() => handleRefreshPress()}>
-							<Ionicons name="refresh" size={28} color="white" />
+							<Ionicons
+								name="refresh"
+								size={28}
+								color={colors.white}
+							/>
 						</Pressable>
 					)}
 				</View>
@@ -356,7 +369,11 @@ export default function LevelScreen() {
 					}}
 				>
 					<Text style={styles.nextLevelText}>Next Level</Text>
-					<Ionicons name="chevron-forward" size={28} color="white" />
+					<Ionicons
+						name="chevron-forward"
+						size={28}
+						color={colors.white}
+					/>
 				</Pressable>
 			)}
 			<View style={styles.piecesContainer}>
@@ -467,12 +484,12 @@ export default function LevelScreen() {
 						flex: 1,
 						justifyContent: "center",
 						alignItems: "center",
-						backgroundColor: "rgba(0,0,0,0.5)",
+						backgroundColor: colors.modalOverlay,
 					}}
 				>
 					<View
 						style={{
-							backgroundColor: "white",
+							backgroundColor: colors.white,
 							padding: 20,
 							borderRadius: 10,
 							width: "75%",
@@ -490,7 +507,11 @@ export default function LevelScreen() {
 								borderRadius: 999,
 							}}
 						>
-							<Ionicons name="close" size={28} color="black" />
+							<Ionicons
+								name="close"
+								size={28}
+								color={colors.black}
+							/>
 						</Pressable>
 						<Text
 							style={{

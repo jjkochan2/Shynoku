@@ -1,8 +1,10 @@
 import { StyleSheet } from "react-native";
 
+import { colors } from "../../theme/colors";
+
 export const styles = StyleSheet.create({
 	levelButton: {
-		backgroundColor: "black",
+		backgroundColor: colors.black,
 		padding: 8,
 		borderRadius: 12,
 		width: 75,
@@ -12,7 +14,7 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	lockedLevelButton: {
-		backgroundColor: "gray",
+		backgroundColor: colors.gray,
 		padding: 8,
 		borderRadius: 12,
 		width: 75,
@@ -22,7 +24,7 @@ export const styles = StyleSheet.create({
 		justifyContent: "center",
 	},
 	levelButtonText: {
-		color: "white",
+		color: colors.white,
 		fontWeight: "600",
 		fontSize: 24,
 	},
@@ -32,7 +34,7 @@ export const styles = StyleSheet.create({
 		right: "15%",
 		width: "20%",
 		height: "20%",
-		backgroundColor: "aqua",
+		backgroundColor: colors.aqua,
 		borderRadius: 999,
 	},
 });

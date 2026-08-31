@@ -45,13 +45,13 @@ const styles = StyleSheet.create({
 
 	titleText: {
 		fontSize: 64,
-		color: "white",
+		color: colors.white,
 		fontWeight: "600",
 	},
 
 	levelSelectButton: {
 		justifyContent: "center",
-		backgroundColor: "black",
+		backgroundColor: colors.black,
 		paddingHorizontal: 32,
 		paddingVertical: 8,
 		borderRadius: 999,
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
 	levelSelectButtonText: {
 		fontSize: 32,
 		fontWeight: "600",
-		color: "white",
+		color: colors.white,
 	},
 });
 
@@ -129,7 +129,7 @@ export default function TitleScreen() {
 						<MaterialIcons
 							name="leaderboard"
 							size={24}
-							color="white"
+							color={colors.white}
 						/>
 					}
 					onPress={handleGameCenterPress}
