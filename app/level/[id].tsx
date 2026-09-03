@@ -212,27 +212,31 @@ export default function LevelScreen() {
 						setScore((prevScore) => prevScore + 1);
 					}
 				});
-				if (
-					id === "endless" &&
-					(!saveData.endlessHighScore ||
-						score + 1 > saveData.endlessHighScore)
-				) {
-					try {
-						const authenticated =
-							await GameCenterModule.authenticateAsync();
+				if (GameCenterModule) {
+					if (
+						id === "endless" &&
+						(!saveData.endlessHighScore ||
+							score + 1 > saveData.endlessHighScore)
+					) {
+						try {
+							const authenticated =
+								await GameCenterModule.authenticateAsync();
 
-						if (!authenticated) {
-							console.log("Not authenticated with Game Center");
-							return;
+							if (!authenticated) {
+								console.log(
+									"Not authenticated with Game Center",
+								);
+								return;
+							}
+							await GameCenterModule.submitScore(
+								score + 1,
+								"endless_high_score",
+							);
+
+							console.log("Score submitted!");
+						} catch (error) {
+							console.error("Score submission failed:", error);
 						}
-						await GameCenterModule.submitScore(
-							score + 1,
-							"endless_high_score",
-						);
-
-						console.log("Score submitted!");
-					} catch (error) {
-						console.error("Score submission failed:", error);
 					}
 				}
 

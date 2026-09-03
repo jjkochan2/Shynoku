@@ -72,6 +72,7 @@ export default function TitleScreen() {
 		useState(false);
 
 	useEffect(() => {
+		if (!GameCenterModule) return;
 		const initialize = async () => {
 			const data = await getSaveData();
 			setSaveData(data);
@@ -84,10 +85,10 @@ export default function TitleScreen() {
 	}, []);
 
 	useEffect(() => {
+		if (!GameCenterModule) return;
 		const subscription = GameCenterModule.addListener(
 			"onAuthenticated",
-			({ playerID }) => {
-				console.log("Game Center authenticated:", playerID);
+			() => {
 				setIsGameCenterAuthenticated(true);
 			},
 		);
@@ -95,6 +96,7 @@ export default function TitleScreen() {
 		return () => subscription.remove();
 	}, []);
 	useEffect(() => {
+		if (!GameCenterModule) return;
 		if (!isGameCenterAuthenticated || !saveData) return;
 		if (saveData.endlessHighScore < 1) return;
 
@@ -114,7 +116,7 @@ export default function TitleScreen() {
 					console.log("Game Center score already up to date.");
 				}
 			} catch (error) {
-				console.error("Game Center migration failed:", error);
+				console.log("Game Center migration failed:", error);
 			}
 		};
 
@@ -124,20 +126,22 @@ export default function TitleScreen() {
 	return (
 		<SafeAreaView style={styles.titleScreen}>
 			<View style={styles.topSpacer}>
-				<GameButton
-					icon={
-						<MaterialIcons
-							name="leaderboard"
-							size={24}
-							color={colors.white}
-						/>
-					}
-					onPress={handleGameCenterPress}
-					style={{
-						paddingHorizontal: 12,
-						paddingVertical: 12,
-					}}
-				/>
+				{GameCenterModule && (
+					<GameButton
+						icon={
+							<MaterialIcons
+								name="leaderboard"
+								size={24}
+								color={colors.white}
+							/>
+						}
+						onPress={handleGameCenterPress}
+						style={{
+							paddingHorizontal: 12,
+							paddingVertical: 12,
+						}}
+					/>
+				)}
 			</View>
 
 			<View style={styles.title}>
